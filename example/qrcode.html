@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+  	<link rel="import" href="packages/polymer/polymer.html">
+	<link rel="import" href="packages/cs_elements/qrcode/qrcode.html">
+	
+	<script type="application/dart" src="qrcode.dart"></script>
+  <body fullbleed>
+  	<label>Code text:
+  	<input id="codeText" type="text" width="80%"><br />
+  	</label>
+  	<label>Width:
+  	<input id="width" type="text" width="80%"><br />
+  	</label>
+  	<cs-qrcode id="qrcode"></cs-qrcode>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+name: cs_elements
+description: A pub package
+dependencies:
+  polymer: any
+  http: any
+dev_dependencies:
+  unittest: any
+transformers:
+- polymer:
+    entry_points:
+    - 'example/qrcode.html'  
+    
+    # tests
+    - 'test/route/route_test.html'
+    - 'test/context_panel/context_panel_test.html'

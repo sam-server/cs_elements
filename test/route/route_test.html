@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <!-- Included for testing routes whose tags are polymer elements -->
+    <link rel="import" href="packages/cs_elements/qrcode/qrcode.html">
+    <link rel="import" href="packages/cs_elements/route/route.html">
+    
+    <script type="application/dart" src="route_test.dart"></script>
+  </head>
+  <body unresolved>
+    <cs-route id="router" pattern="^topLevel/" tag="div">
+      <cs-route pattern="^subRoute/" tag="li"></cs-route>
+      <cs-route pattern="^subRoutePolymer/" tag="cs-qrcode"></cs-route>
+    </cs-route>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link rel="import" href="../../packages/cs_elements/context_panel/context_panel.html">
+<link rel="import" href="loadables.html">
+
+<polymer-element name="my-context" extends="cs-context-panel">
+  <template>
+    <shadow id="shadow">
+      <cs-route pattern="loadable_1" tag="loadable-element1"></cs-route>
+      <cs-route pattern="loadable_2" tag="loadable-element2"></cs-route>
+      <content></content>
+    </shadow>
+  </template>
+  <script type="application/dart" src="my_context.dart"></script>
+</polymer-element>

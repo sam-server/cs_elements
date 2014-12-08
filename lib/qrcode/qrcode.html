@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
+<script src="../../../packages/browser/dart.js"></script>
+<!-- TODO: Replace with qrcode.min.js -->
+<script src="qrcode.js"></script>
+
+<polymer-element name="cs-qrcode" attributes="value width height colorDark colorLight correctionLevel">
+	<template>
+		<style>
+			:host {
+				display: inline-block;
+			}
+		</style>
+		<div id="qrcode" width="{{width}}" height="{{height}}"></div>
+	</template>
+	<script type="application/dart" src="qrcode.dart"></script>
+</polymer-element>

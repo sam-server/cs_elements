@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../packages/polymer/polymer.html">
+<link rel="import" href="../route/route.html">
+
+<polymer-element name="cs-context-panel">
+  <template>
+    <!-- A container to hold the current pane -->
+    <div id="container"></div>
+    <!-- A router which just matches against the start of a string -->
+    <cs-route id="router">
+      <content></content>
+    </cs-route>
+  </template>
+  <script type="application/dart" src="context_panel.dart"></script>
+</polymer-element>
