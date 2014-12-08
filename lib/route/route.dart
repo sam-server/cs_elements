@@ -43,7 +43,6 @@ class RouteElement extends PolymerElement {
   Element route(String path) {
     var visitedPatterns = [];
     var elem;
-    print('path: $path, pattern: $pattern, children: $_children');
     if (pattern == null) {
       //This is just a container for a collection of routers.
       elem = _routeChildren(path, 0, visitedPatterns);
@@ -76,14 +75,13 @@ class RouteElement extends PolymerElement {
    * in the DOM and returned.
    */
   Element _route(String path, int depth, List visitedPatterns) {
-    print('Visiting pattern ${pattern}');
     visitedPatterns.add([depth, this.pattern]);
     
     var match = this.compiledPattern.matchAsPrefix(path);
     if (match == null) {
       return null;
     }
-  
+    
     path = path.substring(match.end);
     // Look for a more specific route in the children who are also [RouteElement]s
     var elem = this._routeChildren(path, depth + 1, visitedPatterns);
