@@ -86,6 +86,13 @@ class ContextPanel extends PolymerElement {
     return loadedElements.single;
   }
   
+  /// When restoring the context after hitting the back button in the browser,
+  /// we want to save the current history (so the forward button works)
+  /// but also want to edit the [:href:] attribute.
+  /// 
+  /// This (temporarily) disables saving the history when the href is changed
+  bool _suppressHistoryEdits = false;
+  
   @published
   String get href => readValue(#href, () => '');
   set href(String value) => writeValue(#href, value);
@@ -102,8 +109,7 @@ class ContextPanel extends PolymerElement {
     // Until this is fixed, the following hack manually adds the items to the base shadow DOM.
     var parentShadowRoot = shadowRoot.olderShadowRoot;
     print(parentShadowRoot.children);
-    var shadowElem = shadowRoot.querySelector('shadow');
-    for (var route in shadowElem.querySelectorAll('cs-route')) {
+    for (var route in shadowRoot.querySelectorAll('shadow > cs-route')) {
       parentShadowRoot.getElementById('router').append(route);
     }
   }
@@ -121,17 +127,18 @@ class ContextPanel extends PolymerElement {
     
   /// Load the context into the given [:href:]
   void hrefChanged(String oldValue, String newValue) {
+    print('href changed ($oldValue -> $newValue)');
     var elem = _route(newValue);
     elem.loadFromUri(newValue).then((_) {
       DivElement panelContainer = $['container'];
-      if (trackHistory && loadedElement != null) {
-        var saveData = {'href': oldValue};
-        saveData['element'] = loadedElement.saveData();
-        print('Saving history for $oldValue');
-        return _history.saveHistory(saveData, _restoreContext).then((savLocation) {
-          _trackedHistory.add(savLocation);
-        });
+      // If the href was changed as a result of hitting the back button,
+      // we want to save the history at the window hash we just left.
+      // [:restoreContext:] saves the history at this value and then
+      // temporarily suppresses further edits.
+      if (!_suppressHistoryEdits) {
+        return _saveHistory(oldValue, loadedElement);
       }
+      _suppressHistoryEdits = false;
     }).then((_) {
       _replaceContext(elem);
       this.fire('context-panel-element-loaded', detail: elem);
@@ -147,11 +154,28 @@ class ContextPanel extends PolymerElement {
       elem.contextPanel = this;
     }
     
-    void _restoreContext(Map<String,dynamic> restoreData) {
-      var href = restoreData['href'];
-      var elem = _route(href);
-      elem.loadFromUri(href, restoreData: restoreData['element']).then((_) {
-        _replaceContext(elem);
+    Future _saveHistory(String href, LoadableElement elem, {String atHash}) {
+      return new Future.sync(() {
+        if (!trackHistory || elem == null) {
+          return null;
+        }
+        var saveData = {
+          'href': href,
+          'elem': elem.saveData()
+        };
+        return _history.saveHistory(saveData, _restoreContext, atHash: atHash).then((savLocation) {
+          _trackedHistory.add(savLocation);
+        });
+      });
+    }
+    
+    void _restoreContext(String atHash, Map<String,dynamic> restoreData) {
+      var restoreHref = restoreData['href'];
+      var elem = _route(restoreHref);
+      elem.loadFromUri(restoreHref, restoreData: restoreData['element']).then((_) {
+        _saveHistory(this.href, loadedElement, atHash: atHash);
+        _suppressHistoryEdits = true;
+        this.href = restoreHref;
       });
     }
 }
