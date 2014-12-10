@@ -3,6 +3,7 @@ description: A pub package
 dependencies:
   polymer: any
   http: any
+  quiver: '>=0.18.0'
 dev_dependencies:
   unittest: any
 transformers:
