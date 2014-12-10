@@ -18,7 +18,9 @@ class JsonFormElement extends FormElement with Polymer, Observable {
   BaseClient get httpClient => _httpClient;
   set httpClient(BaseClient value) => _httpClient = value;
   
-  JsonFormElement.created(): super.created();
+  JsonFormElement.created(): super.created() {
+    polymerCreated();
+  }
   
   void attached() {
     for (var elem in _content.getDistributedNodes()) {
