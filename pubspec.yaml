@@ -1,16 +1,15 @@
 name: cs_elements
 description: A pub package
 dependencies:
-  polymer: any
+  cookies: any
   http: any
+  polymer: any
   quiver: '>=0.18.0'
 dev_dependencies:
   unittest: any
 transformers:
 - polymer:
     entry_points:
-    - 'example/qrcode.html'  
-    
-    # tests
-    - 'test/route/route_test.html'
-    - 'test/context_panel/context_panel_test.html'
+    - example/qrcode.html
+    - test/route/route_test.html
+    - test/context_panel/context_panel_test.html

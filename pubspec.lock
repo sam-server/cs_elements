@@ -25,6 +25,10 @@ packages:
     description: collection
     source: hosted
     version: "1.1.0"
+  cookies:
+    description: cookies
+    source: hosted
+    version: "0.0.3"
   crypto:
     description: crypto
     source: hosted
