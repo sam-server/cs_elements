@@ -41,9 +41,7 @@ class SessionElement extends PolymerElement {
     if (authTokenCookie == null) {
       //window.location.href = 'http://REDIRECT_TO_AUTH?cb=${window.location.href}';
     }
-    this.authToken = UTF8.decode(CryptoUtils.base64StringToBytes(authTokenCookie.value));
-  
-  * 
+    this.authToken = UTF8.decode(CryptoUtils.base64StringToBytes(authTokenCookie.value)); 
    */
   }
   
