@@ -11,6 +11,11 @@ import 'package:polymer/polymer.dart';
 
 @CustomTag('cs-json-form')
 class JsonFormElement extends FormElement with Polymer, Observable {
+  
+  @override
+  @published
+  String method;
+  
   ContentElement get _content => shadowRoot.querySelector('content');
   
   BaseClient _httpClient = new BrowserClient();
@@ -30,30 +35,71 @@ class JsonFormElement extends FormElement with Polymer, Observable {
     }
   }
   
-  Iterable<Element> get _formInputs =>
-     [querySelectorAll('input'), querySelectorAll('select')].expand((i) => i);
-  
-  /// Submit the content of the form.
-  /// When the server returns a response, a CustomEvent with 'detail' set to
-  /// a [FormResponseDetail] object will be returned.
-  Future<Map<String,dynamic>> submitJson(Event evt) {
-    evt.preventDefault();
+  /**
+   * Submit the form. If a [:client:] is provided, then it
+   * will be used for form submission, otherwise uses [:httpClient:].
+   */
+  Future<Response> submit({BaseClient client}) {
+    
+    if (client == null)
+      client = httpClient;
+    
     var request = new Request(this.method, Uri.parse(this.action));
     request.body = JSON.encode(_formJson());
-    request.headers['Content-Type'] = 'application/json; charset=utf-8';
-    return _httpClient.send(request).then(Response.fromStream).then((response) {
+    request.headers['Content-Type'] = 'application/json';
+   
+    print('Sending $method request to $action');
+    print(request.body);
+    
+    return client.send(request).then(Response.fromStream).then((response) {
       if (response.statusCode != 200) {
         print(response.body);
         throw new FormError('Submit failed. Server returned status ${response.statusCode}');
       }
-      var content = JSON.decode(response.body);
-      fire('submit', onNode: this, detail: new FormResponseDetail(response));
+      this.fire('submit', onNode: this, detail: new FormResponseDetail(response));
+      return response;
     });
+    
+  }
+  
+  /// Submit the content of the form.
+  /// When the server returns a response, a CustomEvent with 'detail' set to
+  /// a [FormResponseDetail] object will be returned.
+  Future submitJson(Event evt) {
+    evt.preventDefault();
+    return this.submit();
+  }
+  
+  Iterable<InputElement> get _formInputs {
+    List<InputElement> formInputs = <InputElement>[];
+    for (var elem in _content.getDistributedNodes()) {
+      if (elem is InputElement) {
+        formInputs.add(elem);
+      }
+      if (elem is HtmlElement) {
+        formInputs.addAll(elem.querySelectorAll('input'));
+      }
+    }
+    return formInputs;
+  }
+  
+  Iterable<SelectElement> get _formSelects {
+    List<SelectElement> formSelects = <SelectElement>[];
+    for (var elem in _content.getDistributedNodes()) {
+      if (elem is SelectElement) {
+        formSelects.add(elem);
+      }
+      if (elem is HtmlElement) {
+        formSelects.addAll(elem.querySelectorAll('select'));
+      }
+    }
+    return formSelects;
   }
   
   Map<String,dynamic> _formJson() {
     Map<String,dynamic> result = <String,dynamic>{};
-    for (InputElement elem in _content.querySelectorAll('input')) {
+    for (InputElement elem in _formInputs) {
+      print('Adding json for: ${elem.name}');
       if (elem.type == 'submit')
         continue;
       if (elem.name == null)
@@ -63,28 +109,36 @@ class JsonFormElement extends FormElement with Polymer, Observable {
       }
       var steps = _Steps.parse(elem.name);
       var value;
-      if (elem is InputElement) {
-        if (elem.type == 'file') {
-          throw new FormError("'file' type on input elements not supported");
-        } else if (elem.type == 'checkbox') {
-          value = elem.checked;
-        } else if (elem.type == 'radio') {
-          if (elem.checked) {
-            if (elem.multiple) {
-              value = (value == null ? [] : value)..add(elem.value);
-            } else {
-              value = elem.value;
-            }
+      if (elem.type == 'file') {
+        throw new FormError("'file' type on input elements not supported");
+      } else if (elem.type == 'checkbox') {
+        value = elem.checked;
+      } else if (elem.type == 'radio') {
+        if (elem.checked) {
+          if (elem.multiple) {
+            value = (value == null ? [] : value)..add(elem.value);
+          } else {
+            value = elem.value;
           }
-        } 
+        }
+      } else {
+        value = elem.value;
       }
-      for (SelectElement elem in _content.querySelectorAll('select')) {
-        value = elem.selectedOptions.map((opt) => opt.text).toList();
-        var _steps = _Steps.parse(elem.name); 
-      }
+      
+      
+      
+      print('\tElement value: $value');
       if (value != null)
         steps.setJsonValue(result, value);
     }
+    
+    for (SelectElement elem in _formSelects) {
+      //TODO: Handle form <select>s
+      //value = elem.selectedOptions.map((opt) => opt.text).toList();
+      //var _steps = _Steps.parse(elem.name); 
+    }
+    
+    
     
     return result;
   }
@@ -149,7 +203,8 @@ class _Steps {
     var currStep = initStep;
     var position = match.end;
     
-    while (position <= path.length) {
+    while (position < path.length) {
+      print('position: $position');
       match = INDEX_PATTERN.matchAsPrefix(path, position);
       if (match != null) {
         position = match.end;
