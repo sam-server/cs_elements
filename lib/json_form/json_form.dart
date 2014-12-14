@@ -20,7 +20,13 @@ class JsonFormElement extends FormElement with Polymer, Observable {
   
   BaseClient _httpClient = new BrowserClient();
   
-  BaseClient get httpClient => _httpClient;
+  BaseClient get httpClient {
+    var session = document.querySelector('cs-session');
+    if (session == null) {
+      throw 'No session element found in document';
+    }
+    return session.httpClient;
+  }
   set httpClient(BaseClient value) => _httpClient = value;
   
   JsonFormElement.created(): super.created() {
@@ -44,18 +50,19 @@ class JsonFormElement extends FormElement with Polymer, Observable {
     if (client == null)
       client = httpClient;
     
-    var request = new Request(this.method, Uri.parse(this.action));
+    var formAction = action;
+    if (formAction == null || formAction.isEmpty) {
+      formAction = window.location.href;
+    }
+    
+    var request = new Request(this.method, Uri.parse(formAction));
     request.body = JSON.encode(_formJson());
     request.headers['Content-Type'] = 'application/json';
    
-    print('Sending $method request to $action');
+    print('Sending $method request to $formAction');
     print(request.body);
     
     return client.send(request).then(Response.fromStream).then((response) {
-      if (response.statusCode != 200) {
-        print(response.body);
-        throw new FormError('Submit failed. Server returned status ${response.statusCode}');
-      }
       this.fire('submit', onNode: this, detail: new FormResponseDetail(response));
       return response;
     });
@@ -102,8 +109,8 @@ class JsonFormElement extends FormElement with Polymer, Observable {
       print('Adding json for: ${elem.name}');
       if (elem.type == 'submit')
         continue;
-      if (elem.name == null)
-        throw new FormError('Element with `null` name');
+      if (elem.name == null || elem.name.isEmpty)
+        continue;
       if (!elem.checkValidity()) {
         throw new FormError('Invalid element (${elem.name}) in form');
       }
@@ -124,9 +131,6 @@ class JsonFormElement extends FormElement with Polymer, Observable {
       } else {
         value = elem.value;
       }
-      
-      
-      
       print('\tElement value: $value');
       if (value != null)
         steps.setJsonValue(result, value);
