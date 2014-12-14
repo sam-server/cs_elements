@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="import" href="packages/polymer/polymer.html">
+    <link rel="import" href="packages/cs_elements/money_input/money_input.html">
+  
+    <script type="application/dart">
+      export 'package:polymer/init.dart';
+    </script>
+  </head>
+  <body unresolved fullbleed layout vertical>
+    <label>Symbol prefix
+      <cs-money-input name="input" symbol="$"></cs-money-input>  
+    </label>
+    <label>Symbol suffix
+      <cs-money-input name="input" symbol="lek" 
+                      label="test-label" appendSymbol></cs-money-input>
+    </label>
+  </body>
+</html>
