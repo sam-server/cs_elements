@@ -9,7 +9,8 @@ import 'package:cs_elements/context_panel/context_panel.dart';
 class MyContext extends ContextPanel {
   @override
   bool get trackHistory => true;
+  @override
+  String get trackName => 'my-context';
   
   MyContext.created(): super.created();
-  
 }

@@ -6,7 +6,7 @@
 <!-- 
 An element with the given numeric symbol -->
 
-<polymer-element name="cs-money-input" attributes="symbol appendSymbol name value label numDigits">
+<polymer-element name="cs-money-input" attributes="symbol appendSymbol name value label numDigits placeholder disabled">
   
   <template layout horizontal>
       <style>
@@ -21,13 +21,16 @@ An element with the given numeric symbol -->
         }
       </style>
       <div layout horizontal>
+        <label>{{label}}
 	      <span id="symbol"
 	            class="{{ {appended: appendSymbol} }}">{{symbol}}</span>
-	      <input is="core-input" type="number" name="{{name}}" 
-	             value="{{value}}" step="{{inputStep}}"
-	             placeholder="{{label}}"
-	             preventInvalidInput
-	      />     
+		      <input is="core-input" type="number" name="{{name}}" 
+		             value="{{value}}" step="{{inputStep}}"
+		             placeholder="{{placeholder}}"
+		             preventInvalidInput
+		             disabled?="{{disabled}}"
+		      />   
+	      </label> 
       </div>      
   </template>
   <script type="application/dart" src="money_input.dart" ></script>

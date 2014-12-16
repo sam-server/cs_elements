@@ -14,6 +14,9 @@ class MoneyInput extends PolymerElement {
   @published
   String symbol;
   
+  @published
+  String currencyCode;
+  
   /// Display the symbol *after* the input element?
   @published
   bool appendSymbol;
@@ -29,7 +32,13 @@ class MoneyInput extends PolymerElement {
   String label;
   
   @published
+  String placeholder;
+  
+  @published
   String value;
+  
+  @published
+  bool disabled;
   
   @observable
   String get committedValue => _input.committedValue;

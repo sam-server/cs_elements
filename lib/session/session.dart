@@ -40,6 +40,7 @@ class SessionElement extends PolymerElement {
   String csrfToken;
   
   AuthToken get authToken {
+    //TODO: Storing a base64 encoded user:pass is *very* insecure.
     var c = _cookies['authToken'];
     if (c == null)
       return null;

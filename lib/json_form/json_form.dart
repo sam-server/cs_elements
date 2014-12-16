@@ -9,6 +9,8 @@ import 'package:http/browser_client.dart';
 
 import 'package:polymer/polymer.dart';
 
+import '../money_input/money_input.dart';
+
 @CustomTag('cs-json-form')
 class JsonFormElement extends FormElement with Polymer, Observable {
   
@@ -77,73 +79,86 @@ class JsonFormElement extends FormElement with Polymer, Observable {
     return this.submit();
   }
   
-  Iterable<InputElement> get _formInputs {
-    List<InputElement> formInputs = <InputElement>[];
-    for (var elem in _content.getDistributedNodes()) {
-      if (elem is InputElement) {
-        formInputs.add(elem);
+  Iterable<Element> _gatherFormInputs(Element elem) {
+    List<Element> formInputs = <Element>[];
+    if (elem is ContentElement) {
+      var distributedElems = elem.getDistributedNodes()
+          .where((node) => node is Element);
+      for (var distributedElem in distributedElems) {
+        formInputs.addAll(_gatherFormInputs(distributedElem));
       }
-      if (elem is HtmlElement) {
-        formInputs.addAll(elem.querySelectorAll('input'));
+    } else if (elem is InputElement) {
+      formInputs.add(elem);
+    } else if (elem is SelectElement) {
+      formInputs.add(elem);
+    } else if (elem is TextAreaElement) {
+      formInputs.add(elem);
+    } else if (elem is MoneyInput) {
+      //FIXME: Needs to be publishable by value
+      formInputs.add(elem);
+      
+    } else if (elem.shadowRoot != null) {
+      for (var shadowedElem in elem.shadowRoot.children) {
+        formInputs.addAll(_gatherFormInputs(shadowedElem));
+      }
+    } else {
+      for (var child in elem.children) {
+        formInputs.addAll(_gatherFormInputs(child));
       }
     }
     return formInputs;
   }
   
-  Iterable<SelectElement> get _formSelects {
-    List<SelectElement> formSelects = <SelectElement>[];
-    for (var elem in _content.getDistributedNodes()) {
-      if (elem is SelectElement) {
-        formSelects.add(elem);
-      }
-      if (elem is HtmlElement) {
-        formSelects.addAll(elem.querySelectorAll('select'));
-      }
-    }
-    return formSelects;
+  Iterable<Element> get _formInputs {
+    return _gatherFormInputs(_content);
   }
   
   Map<String,dynamic> _formJson() {
     Map<String,dynamic> result = <String,dynamic>{};
-    for (InputElement elem in _formInputs) {
-      print('Adding json for: ${elem.name}');
-      if (elem.type == 'submit')
-        continue;
-      if (elem.name == null || elem.name.isEmpty)
-        continue;
-      if (!elem.checkValidity()) {
-        throw new FormError('Invalid element (${elem.name}) in form');
-      }
-      var steps = _Steps.parse(elem.name);
-      var value;
-      if (elem.type == 'file') {
-        throw new FormError("'file' type on input elements not supported");
-      } else if (elem.type == 'checkbox') {
-        value = elem.checked;
-      } else if (elem.type == 'radio') {
-        if (elem.checked) {
-          if (elem.multiple) {
-            value = (value == null ? [] : value)..add(elem.value);
-          } else {
-            value = elem.value;
-          }
+    for (Element elem in _formInputs) {
+      if (elem is InputElement) {
+        print('Adding json for: ${elem.name}');
+        if (elem.type == 'submit')
+          continue;
+        if (elem.name == null || elem.name.isEmpty)
+          continue;
+        if (!elem.checkValidity()) {
+          throw new FormError('Invalid element (${elem.name}) in form');
         }
-      } else {
-        value = elem.value;
-      }
-      print('\tElement value: $value');
-      if (value != null)
+        var steps = _Steps.parse(elem.name);
+        var value;
+        if (elem.type == 'file') {
+          throw new FormError("'file' type on input elements not supported");
+        } else if (elem.type == 'checkbox') {
+          value = elem.checked;
+        } else if (elem.type == 'radio') {
+          if (elem.checked) {
+            if (elem.multiple) {
+              value = (value == null ? [] : value)..add(elem.value);
+            } else {
+              value = elem.value;
+            }
+          }
+        } else {
+          value = elem.value;
+        }
+        print('\tElement value: $value');
+        if (value != null)
+          steps.setJsonValue(result, value);
+      } else if (elem is MoneyInput) {
+        var value = {
+          'code': elem.currencyCode,
+          'value': elem.value,
+        };
+        var steps = _Steps.parse(elem.name);
         steps.setJsonValue(result, value);
+        
+      } else if (elem is SelectElement) {
+        //TODO: Handle <select>
+      } else if (elem is TextAreaElement) {
+        //TODO: Handle <textarea>
+      }
     }
-    
-    for (SelectElement elem in _formSelects) {
-      //TODO: Handle form <select>s
-      //value = elem.selectedOptions.map((opt) => opt.text).toList();
-      //var _steps = _Steps.parse(elem.name); 
-    }
-    
-    
-    
     return result;
   }
 }

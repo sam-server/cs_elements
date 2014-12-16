@@ -46,5 +46,5 @@ class LoadableElement2 extends PolymerElement implements LoadableElement {
     return new Future.value();
   }
   
-  Map<String,dynamic> saveData() => null;
+  Map<String,dynamic> saveData() => {};
 }
