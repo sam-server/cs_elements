@@ -83,7 +83,7 @@ class SessionClient extends Object with BaseClient {
 
 abstract class AuthToken {
   static AuthToken parse(String rawToken) {
-    rawToken = rawToken.replaceAll('"', '');
+    rawToken = Uri.decodeComponent(rawToken);
     var components = rawToken.split(' ');
     if (components[0] == 'Basic') {
       var userPass = UTF8.decode(CryptoUtils.base64StringToBytes(components[1]))
@@ -97,6 +97,8 @@ abstract class AuthToken {
   String get authType;
   
   String get token;
+  
+  String toString() => '$authType $token';
 }
 
 class BasicAuthToken implements AuthToken {
@@ -110,8 +112,6 @@ class BasicAuthToken implements AuthToken {
   
   String get token =>
       CryptoUtils.bytesToBase64(UTF8.encode('$_username:$_password'));
-  
-  String toString() => '$authType $token';
 }
 
 class ParseError extends StateError {
