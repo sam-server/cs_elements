@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
+<script type="application/dart" src="form_controls.dart"></script>
+
+<polymer-element name="cs-form-control-panel" attributes="state">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <content select="cs-form-control"></content>
+  </template>
+</polymer-element>
+
+<polymer-element name="cs-form-control" attributes="visibleState">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+    </style>
+    <template if="{{visible}}">
+      <content></content>
+    </template>
+  </template>
+</polymer-element>
+

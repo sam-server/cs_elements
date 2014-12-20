@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="import" href="packages/polymer/polymer.html">
+    
+    <link rel="import" href="packages/core_elements/core_icons.html">
+    <link rel="import" href="packages/cs_elements/form_controls/form_controls.html">
+    
+    <script type="application/dart" src="form_controls_test.dart"></script>
+  </head>
+  
+  <body unresolved fullbleed>
+    <cs-form-control-panel state="enabled">
+      <cs-form-control visibleState="enabled" id="edit">
+        <core-icon icon="create"></core-icon>
+      </cs-form-control>
+      <cs-form-control visibleState="disabled" id="save">
+        <core-icon icon="save"> </core-icon>
+      </cs-form-control>
+      <cs-form-control visibleState="disabled" id="cancel">
+        <core-icon icon="cancel"></core-icon>
+      </cs-form-control>
+    </cs-form-control-panel>
+  </body>
+</html>
