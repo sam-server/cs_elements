@@ -11,6 +11,7 @@ class FormControlPanel extends PolymerElement {
   /// This affects which of the child controls are currently displayed in the element
   @PublishedProperty(reflect: true)
   String state;
+  //TODO: Should change to bool (disabled?=)
 
   Iterable<FormControlElement> get visibleControls =>
       _content.getDistributedNodes()
