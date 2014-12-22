@@ -16,3 +16,4 @@ transformers:
     - example/money_input.html
     - test/route/route_test.html
     - test/context_panel/context_panel_test.html
+    - test/form_controls/form_controls_test.html
