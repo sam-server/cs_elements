@@ -27,18 +27,18 @@ SessionElement get session => querySelector('cs-session');
  */
 @CustomTag('cs-session')
 class SessionElement extends PolymerElement {
-  
+
   CookieJar _cookies;
-  
+
   void _saveCookies() {
     document.cookie = _cookies.values.map((v) => '$v').join(';');
   }
-  
+
   bool get loggedIn => authToken != null;
-  
+
   @published
   String csrfToken;
-  
+
   AuthToken get authToken {
     //TODO: Storing a base64 encoded user:pass is *very* insecure.
     var c = _cookies['authToken'];
@@ -46,11 +46,11 @@ class SessionElement extends PolymerElement {
       return null;
     return AuthToken.parse(c.value);
   }
-  
+
   SessionElement.created(): super.created() {
     this._cookies = new CookieJar(document.cookie);
   }
-  
+
   SessionClient get httpClient => new SessionClient._(this);
 
   ContextPanel contextPanel;
@@ -58,20 +58,20 @@ class SessionElement extends PolymerElement {
 
 class SessionClient extends Object with BaseClient {
   static final _async = new Future.value();
-  
+
   SessionElement sessionElement;
-  
+
   BaseClient _baseClient;
-  
+
   SessionClient._(this.sessionElement):
     this._baseClient = new BrowserClient();
-  
+
   @override
   Future<StreamedResponse> send(BaseRequest request) {
     return _async.then((_) {
       print('attching csrf token ${sessionElement.csrfToken}');
       request.headers['X-CSRFToken'] = sessionElement.csrfToken;
-      
+
       if (sessionElement.authToken != null) {
         print('Attaching auth token ${sessionElement.authToken}');
         request.headers['Authorization'] = '${sessionElement.authToken}';
@@ -93,23 +93,23 @@ abstract class AuthToken {
       throw new ParseError(0, 'Unrecognised authType: ${components[0]}');
     }
   }
-  
+
   String get authType;
-  
+
   String get token;
-  
+
   String toString() => '$authType $token';
 }
 
-class BasicAuthToken implements AuthToken {
-  
+class BasicAuthToken extends AuthToken {
+
   final String authType = 'Basic';
-  
+
   final String _username;
   final String _password;
-  
+
   BasicAuthToken(this._username, this._password);
-  
+
   String get token =>
       CryptoUtils.bytesToBase64(UTF8.encode('$_username:$_password'));
 }
@@ -117,6 +117,6 @@ class BasicAuthToken implements AuthToken {
 class ParseError extends StateError {
   ParseError(int position, String message):
     super('Parse error at $position: $message');
-  
+
   toString() => 'ParseError: $message';
 }
