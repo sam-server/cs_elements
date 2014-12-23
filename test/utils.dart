@@ -1,3 +1,5 @@
+library test_utils;
+
 import 'dart:async';
 import 'dart:html';
 
