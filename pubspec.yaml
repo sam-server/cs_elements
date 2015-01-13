@@ -5,6 +5,8 @@ dependencies:
   core_elements: '>=0.5.0'
   http: any
   polymer: any
+  polymer_ajax_form:
+    path: /Users/ovangle/Programming/sam_server3_workspace/polymer_ajax_form
   quiver: '>=0.18.0'
   rational: any
 dev_dependencies:
@@ -17,3 +19,4 @@ transformers:
     - test/route/route_test.html
     - test/context_panel/context_panel_test.html
     - test/form_controls/form_controls_test.html
+    - test/inputs/money_input.html

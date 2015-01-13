@@ -32,7 +32,7 @@ packages:
   core_elements:
     description: core_elements
     source: hosted
-    version: "0.6.0"
+    version: "0.6.0+2"
   crypto:
     description: crypto
     source: hosted
@@ -77,6 +77,12 @@ packages:
     description: polymer
     source: hosted
     version: "0.15.3+2"
+  polymer_ajax_form:
+    description:
+      path: "/Users/ovangle/Programming/sam_server3_workspace/polymer_ajax_form"
+      relative: false
+    source: path
+    version: "0.1.0"
   polymer_expressions:
     description: polymer_expressions
     source: hosted

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
+<!-- 
+  A polymer element illustrating the use of the `polymer_ajax_form` `FormInput`
+  mixin and an input for creating localised money amounts.
+ -->
+ 
+<polymer-element name="money-input" attributes="name value disabled">
+  <template>
+    <style>
+      :host {
+        -moz-appearance: textfield;
+        -webkit-appearance: textfield;
+        
+        background-color: white;
+        background-color: -moz-field;
+        border: 1px solid darkgrey;
+        /* box-shadow: 1px 1px 1px 0 lightgray inset; */
+        font: -moz-field;
+        font: -webkit-small-control;
+        margin-top: 5px;
+        padding: 2px 3px;
+        white-space: nowrap;
+      }
+      
+      #currCode {
+        width: 3em;
+        padding-left: 2px;
+        padding-right: 2px;
+      }
+      
+      input[type=text] {
+        border: none;
+        width: 100%;
+        background-color: transparent;
+      }
+      
+      span {
+        padding-top: 1px;
+      }
+      
+    </style>
+    <div layout horizontal>
+      <input type="text" value="{{moneyValue.value}}" pattern="\d+(\.?\d+)?"> 
+      <span id="currCode">{{moneyValue.currencyCode}}</span>
+    </div>
+  </template>
+  <script type="application/dart" src="money_input.dart"></script>
+</polymer-element>

@@ -47,8 +47,16 @@ class SessionElement extends PolymerElement {
     return AuthToken.parse(c.value);
   }
 
+  ObservableMap<String,String> sessionHeaders;
+
   SessionElement.created(): super.created() {
     this._cookies = new CookieJar(document.cookie);
+    this.sessionHeaders = toObservable(<String,String>{});
+  }
+
+  void attached() {
+    this.sessionHeaders['Authorization'] = '$authToken';
+    this.sessionHeaders['x-csrftoken'] = '$csrfToken';
   }
 
   SessionClient get httpClient => new SessionClient._(this);
