@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../../packages/core_elements/core_icons.html">
+
+<polymer-element name="error-display" attributes="error">
+  <template>
+    <style>
+      :host {
+        display: block;
+        border: 1px solid-black;
+      }
+    
+      :host core-icon {
+        color: #d43141;
+        margin-right: 10px;
+        margin-left: 10px;
+      }
+    </style>
+    
+    
+      <fieldset>
+        <legend>Error</legend>
+        <div id="container" layout horizontal center start-justified>
+        <core-icon icon="error" on-click="{{printError}}"></core-icon>
+        <p>{{error}}</p>
+        </div>
+      </fieldset>
+  </template>
+  <script type="application/dart" src="error_display.dart"></script>
+</polymer-element>

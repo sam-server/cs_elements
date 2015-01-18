@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../../packages/core_elements/core_icon.html">
+
+<polymer-element name="input-decorator" attributes="icon">
+  <template>
+    <style>
+      :host {
+        height: 60px;
+        width: 360px;
+        background-color: #393844;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: none;
+      }
+      
+      #container {
+        height: 100%;
+      }
+      
+      #container.focused {
+        outline: -webkit-focus-ring-color auto 5px;
+      }
+      
+      :host core-icon {
+        margin-left: 10px;
+        margin-right: 10px;
+        color: white;
+      }
+    </style>
+    <div id="container" layout horizontal center>
+      <template if="{{ icon != 'none' }}">
+        <core-icon icon="{{icon}}"></core-icon>
+      </template>
+      <content></content>
+    </div>
+  </template>
+  <script type="application/dart" src="input_decorator.dart"></script>
+  
+</polymer-element>

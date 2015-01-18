@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
+<link rel="import" href="../../../packages/core_elements/core_style.html">
+<link rel="import" href="../../../packages/core_elements/core_selector.html">
+
+<link rel="import" href="../flip_switch/flip_switch.html">
+<link rel="import" href="login_form/login_form.html">
+<link rel="import" href="signup_form/signup_form.html">
+
+<polymer-element name="user-context">
+<template>
+  <style>
+    :host {
+      font-family: sans-serif;
+      font-size: 1em;
+      color: #999999;
+        
+      width: 486px;
+      height: 500px;
+      background-color: #272732;
+      display: inline-block;
+      border: 1px solid black;
+    }
+    
+    #outerContainer {
+      height: inherit;
+    }
+    
+    flip-switch {
+      margin-top: 5px;
+    }
+    
+    #formContainer {
+      position: relative;
+    }
+  
+    #userForm {
+      margin: 5px; 
+      height: inherit; 
+    }
+    
+    .button {
+      border: 1px solid black;
+      height: 2em;
+      width: 8em;      
+    }
+    
+    .button.core-selected {
+      background-color: blue;
+    }
+    
+    :host /deep/ .formInputContainer {
+      height: 60px;
+       width: 360px;
+       background-color: #393844;
+       margin-top: 10px;
+       border-radius: 5px;
+       border: none;
+    }
+    
+    :host /deep/ button.formInputContainer {
+       background-color: #1cce77;
+       color: white;
+       font: inherit;
+       margin-bottom: 20px;
+       cursor: pointer;
+     }
+    
+    :host /deep/ .formInputContainer:focus {
+      outline: -webkit_focus_ring color auto 5px;
+    }
+    
+    :host /deep/ input[is=core-input].formInput {
+      width: 100%;
+      margin-top: 2px;
+      border-radius: 2px;
+      color: #999999;
+    }
+    
+    :host /deep/ input[is=core-input]:focus {
+      color: white;
+    }
+    
+    #errorContainer {
+      height: 2em;
+    }
+    
+  </style>
+  <core-style id="userForm">
+  </core-style>
+  
+  <div id="outerContainer" layout vertical>
+    <div layout horizontal center-justified>
+	    <flip-switch leftLabel="Log in" leftValue="login"
+	                 rightLabel="sign Up" rightValue="signup"
+	                 selectedValue="{{mode}}">
+	   </flip-switch>
+    </div>
+    <div id="formContainer" flex>
+	    <template if="{{mode == 'login'}}">
+	      <login-form id="userForm" fit></login-form>
+	    </template>
+	    <template if="{{mode == 'signup'}}">
+	      <signup-form id="userForm" fit></signup-form>
+	    </template>
+    </div>
+  </div>
+</template>
+<script type="application/dart" src="user_context.dart"></script>
+</polymer-element>

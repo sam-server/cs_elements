@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../../packages/core_elements/core_input.html">
+<link rel="import" href="../../../../packages/core_elements/core_icons.html">
+<link rel="import" href="../../../../packages/polymer_ajax_form/ajax_form.html">
+
+<link rel="import" href="../../inputs/password_input.html">
+<link rel="import" href="../src/input_decorator.html">
+<link rel="import" href="../src/error_display.html">
+
+<polymer-element name="login-form" attributes="username password confirmPassword">
+  <template>
+    <style>
+      :host {
+        font: inherit;
+        display: block;
+        height: 100%;
+      }
+      
+      :host form {
+        height: 100%;
+      }
+      
+      #rememberMe {
+        margin-top: 10px;
+        color: 0x999999;
+      }
+      
+      #errorContainer {
+        height: 1em;
+        margin-top: 10px;
+      }
+    </style>
+    
+    <form is="ajax-form" enctype="application/json"
+                         headers="{{session.sessionHeaders}}"
+                         method="POST"
+                         handleAs="json"
+                         layout vertical center>
+      <div id="inputContainer" layout vertical center>
+        <input-decorator icon="account-box">
+          <input is="core-input" type="text" name="username" class="formInput"
+                 value="{{username}}"
+                 placeholder="Username">
+        </input-decorator>
+        <input-decorator icon="lock">
+          <password-input id="passwordInput" name="password" 
+                          value="{{password}}"
+                          placeholder="Password"></password-input>
+        </input-decorator>
+         <label id="rememberMe" layout horizontal>
+           <input type="checkbox" name="remembered">
+           Remember me on this computer
+         </label>
+       
+        <template if="{{errorMessage != ''}}">
+          <error-display error="{{errorMessage}}"></error-display>
+        </template>
+        <!-- 
+        <div id="errorContainer">{{errorMessage}}</div>
+         -->
+        <input type="hidden" name="kind" value="authentication#user">
+       
+      </div>
+      <div flex layout vertical end-justified>
+       <button class="formInputContainer" id="loginButton" on-click="{{submitForm}}">Log in</button>   
+      </div>
+    </form>
+  </template>
+  <script type="application/dart" src="login_form.dart"></script>
+</polymer-element>

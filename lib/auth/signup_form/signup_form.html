@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+
+<link rel="import" href="../../../../packages/core_elements/core_input.html">
+<link rel="import" href="../../../../packages/core_elements/core_icons.html">
+<link rel="import" href="../../../../packages/polymer_ajax_form/ajax_form.html">
+
+<link rel="import" href="../../inputs/password_input.html">
+<link rel="import" href="../src/input_decorator.html">
+<link rel="import" href="../src/error_display.html">
+
+<polymer-element name="signup-form">
+  <template>
+    <style>
+      :host {
+        font: inherit;
+        height: 100%;
+        display: block;
+      }
+      
+      :host form {
+        height: 100%;
+      }
+      
+      .formInputContainer {
+        height: 60px;
+        width: 360px;
+        background-color: #393844;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: none;
+      }
+      
+      .formInputContainer core-icon {
+        margin-left: 10px;
+        margin-right: 10px;
+        color: white;
+      }
+      
+      #rememberMe {
+        margin-top: 10px;
+        color: 0x999999;
+      }
+      
+      #errorContainer {
+        height: 1em;
+      }
+      
+      password-input[name=password] {
+        width: 100%;
+        height: 100%;
+        
+      }
+    </style>
+    
+    <form is="ajax-form" enctype="application/json"
+                         method="POST" 
+                         headers="{{session.sessionHeaders}}"
+                         id="mainform" 
+                         layout vertical center>
+       <div id="inputContainer" layout vertical center>
+         <input-decorator icon="account-box">
+           <input is="core-input" type="text" name="username" placeholder="Username" 
+                  value="{{username}}" required on-blur="{{validateForm}}"/>
+         </input-decorator>
+         <input-decorator icon="mail">
+           <input is="core-input" type="email" name="email" id="email" placeholder="Email" 
+                  value="{{email}}" required on-blur="{{validateForm}}"/>
+         </input-decorator>
+         <input-decorator icon="lock">
+           <password-input name="password" placeholder="Password" value="{{password}}" displayMeter on-blur="{{validateForm}}"></password-input>
+         </input-decorator>
+         <input-decorator icon="lock">
+           <input is="core-input" type="password" id="confirmPassword" placeholder ="Re-enter password" on-blur="{{validateForm}}"/>
+         </input-decorator>
+        
+	       <template if="{{errorMessage != ''}">
+	         <error-display error="{{errorMessage}}"></error-display>
+	       </template>
+        
+         <input type="hidden" name="auth_type" value="userpass"/> 
+        
+      </div>
+	    <div flex layout vertical end-justified>
+	      <button class="formInputContainer" on-click="{{submitForm}}">Sign up</button>
+      </div>
+    </form>
+  </template>
+  <script type="application/dart" src="signup_form.dart"></script>
+</polymer-element>
