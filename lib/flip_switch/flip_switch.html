@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../packages/core_elements/core_selector.html">
+
+<polymer-element name="flip-switch" attributes="leftLabel rightLabel leftValue rightValue selectedValue">
+<template>
+  <style>
+    :host {
+      font: inherit;
+      display: inline-block;
+      padding: 5px;
+      cursor: pointer;
+    }
+    
+    #left {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      
+      border-top: 3px solid #393844;
+      border-left: 3px solid #393844;
+      border-bottom: 3px solid #393844;
+    }
+    
+    #left.core-selected {
+      border: none;
+    }
+    
+    #right {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      
+      border-top: 3px solid #393844;
+      border-right: 3px solid #393844;
+      border-bottom: 3px solid #393844;
+    }
+    
+    #right.core-selected {
+      border: none;
+    }
+    
+    :host div {
+      padding: 0.5em;
+      color: #999999;
+    }
+    
+    :host div.core-selected {
+      background-color: #1cce77;
+      color: white;
+    }
+  </style>
+  <core-selector selected="{{selectedValue}}" valueattr="label" layout horizontal>
+    <div id="left" label="{{leftValue}}" layout horizontal center center-justified>{{leftLabel}}</div>
+    <div id="right" label="{{rightValue}}" layout horizontal center center-justified>{{rightLabel}}</div>
+  </core-selector>
+</template>
+<script type="application/dart" src="flip_switch.dart"></script>
+</polymer-element>
