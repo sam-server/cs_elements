@@ -43,16 +43,6 @@ class PasswordStrengthMeter extends PolymerElement {
   /// [10**2, 10**4, 10**6, 10**8, Infinity].
   @observable
   int score;
-  scoreChanged(oldValue, newValue) {
-    for (var i=1;i<=4;i++) {
-      var span = shadowRoot.querySelector('#score_$i');
-      if (newValue >= i) {
-        span.classes.add('highlighted');
-      } else {
-        span.classes.remove('highlighted');
-      }
-    }
-  }
 
 
   PasswordStrengthMeter.created(): super.created() {
