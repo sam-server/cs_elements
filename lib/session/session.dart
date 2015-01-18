@@ -17,11 +17,6 @@ import 'package:cookies/cookies.dart';
 import '../context_panel/context_panel.dart';
 
 /**
- * Gets the session from the body of the html (if one is present)
- */
-SessionElement get session => querySelector('cs-session');
-
-/**
  * A [SessionElement] defines various global parameters
  * to the application.
  */
@@ -38,6 +33,9 @@ class SessionElement extends PolymerElement {
 
   @published
   String csrfToken;
+
+  @published
+  String username;
 
   AuthToken get authToken {
     //TODO: Storing a base64 encoded user:pass is *very* insecure.
