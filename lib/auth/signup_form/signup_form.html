@@ -55,24 +55,35 @@
     </style>
     
     <form is="ajax-form" enctype="application/json"
-                         method="POST" 
+                         method="POST"
                          headers="{{session.sessionHeaders}}"
                          id="mainform" 
+                         action="/auth/register"
                          layout vertical center>
        <div id="inputContainer" layout vertical center>
          <input-decorator icon="account-box">
            <input is="core-input" type="text" name="username" placeholder="Username" 
-                  value="{{username}}" required on-blur="{{validateForm}}"/>
+                  value="{{username}}" required on-blur="{{validateForm}}"
+                  class="formInput"/>
          </input-decorator>
          <input-decorator icon="mail">
            <input is="core-input" type="email" name="email" id="email" placeholder="Email" 
-                  value="{{email}}" required on-blur="{{validateForm}}"/>
+                  value="{{email}}" required on-blur="{{validateForm}}"
+                  class="formInput"/>
          </input-decorator>
          <input-decorator icon="lock">
-           <password-input name="password" placeholder="Password" value="{{password}}" displayMeter on-blur="{{validateForm}}"></password-input>
+           <password-input id="password" name="password" 
+                           placeholder="Password" 
+                           value="{{password}}" displayMeter 
+                           on-blur="{{validateForm}}">
+           </password-input>
          </input-decorator>
          <input-decorator icon="lock">
-           <input is="core-input" type="password" id="confirmPassword" placeholder ="Re-enter password" on-blur="{{validateForm}}"/>
+           <input is="core-input" type="password" 
+                  id="confirmPassword" 
+                  placeholder ="Re-enter password" 
+                  on-blur="{{validateForm}}"
+                  class="formInput"/>
          </input-decorator>
         
 	       <template if="{{errorMessage != ''}">
@@ -80,7 +91,6 @@
 	       </template>
         
          <input type="hidden" name="auth_type" value="userpass"/> 
-        
       </div>
 	    <div flex layout vertical end-justified>
 	      <button class="formInputContainer" on-click="{{submitForm}}">Sign up</button>

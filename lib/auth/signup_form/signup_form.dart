@@ -32,6 +32,7 @@ class SignupForm extends PolymerElement {
 
   SignupForm.created(): super.created() {
     this.errorMessage = 'Username not provided';
+    this.password = '';
   }
 
   void attached() {
@@ -77,14 +78,21 @@ class SignupForm extends PolymerElement {
   }
 
   void submitForm([Event e]) {
+    e.preventDefault();
     validateForm();
-    if (hasError)
+    if (hasError) {
+      print('error: $errorMessage');
+      print('pwd1: ${$['password'].value}');
+      print('pwd2: ${$['confirmPassword'].value}');
       return;
+    }
+
     AjaxFormElement form = $['mainform'];
     form.submit().then((response) {
+      print(response.responseText);
       var body = JSON.decode(UTF8.decode(response.content));
       if (response.status >= 200 && response.status < 300) {
-        window.location.href = '/auth/login';
+        window.location.href = '/';
       } else {
         this.errorMessage = body['error'];
       }
