@@ -15,7 +15,7 @@ transformers:
 - polymer:
     entry_points:
     - example/qrcode.html
-    - example/money_input.html
+    - example/auth/user_context.html
     - test/route/route_test.html
     - test/context_panel/context_panel_test.html
     - test/form_controls/form_controls_test.html
