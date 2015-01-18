@@ -16,9 +16,6 @@ class PasswordInput extends PolymerElement with FormInput {
   bool get displayMeter => readValue(#displayMeter, () => false);
   set displayMeter(bool value) => writeValue(#displayMeter, value);
 
-  @observable
-  String internalValue;
-
   StreamSubscription _inputOnFocus;
   StreamSubscription _inputOnBlur;
 
@@ -26,11 +23,9 @@ class PasswordInput extends PolymerElement with FormInput {
 
   void attached() {
     super.attached();
-
     _inputOnFocus = shadowRoot.querySelector('input[is=core-input]').onFocus.listen((Event evt) {
       this.fire('password-input-focus', detail: evt);
     });
-
     _inputOnBlur = shadowRoot.querySelector('input[is=core-input]').onBlur.listen((Event evt) {
       this.fire('password-input-blur', detail: evt);
     });
