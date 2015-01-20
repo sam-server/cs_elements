@@ -5,11 +5,15 @@ import 'dart:js' as js;
 
 import 'package:polymer/polymer.dart';
 
+// TODO: Move QR code generation to server, then we can generate actual image urls
+//       for the image, making printing easier, and hopefully (hopefully) removing
+//       the size restrictions.
+
 @CustomTag('cs-qrcode')
 class QRCode extends PolymerElement {
-  
+
   JsObject _qrCode;
-  
+
   /**
    * The value of the underlying text used to generate the qr code.
    */
@@ -17,10 +21,10 @@ class QRCode extends PolymerElement {
   String get value => readValue(#value, () => '');
   set value(String value) => writeValue(#value, value);
   void valueChanged(oldValue, newValue) => _refreshCode();
-  
+
   /// The error correction level of the code generation algorithm
   /// The following values are supported:
-  /// 
+  ///
   /// "low": 7% of codewords can be restored
   /// "medium": 15% of codewords can be restored
   /// "quartile": 25% of codewords can be restored
@@ -29,41 +33,41 @@ class QRCode extends PolymerElement {
   String get correctionLevel => readValue(#correctionLevel, () => 'high');
   set correctionLevel(String value) => writeValue(#correctionLevel, value);
   void correctionLevelChanged(o, n) => _makeCode();
-  
+
   @published
   String get width => readValue(#width, () => '256');
   set width(String value) => writeValue(#width, value);
   void widthChanged(o, n) => _makeCode();
-  
+
   @published
   String get height => readValue(#height, () => '256');
   set height(String value) => writeValue(#height, value);
   void heightChanged(o, n) => _makeCode();
-  
+
   @published
   String get colorDark => readValue(#colorDark, () => '#000000');
   set colorDark(String value) => writeValue(#colorDark, value);
   void colorDarkChanged(o, n) => _makeCode();
-  
+
   @published
   String get colorLight => readValue(#colorLight, () => '#ffffff');
   set colorLight(String value) => writeValue(#colorLight, value);
   void colorLightChanged(o, n) => _makeCode();
-  
+
   QRCode.created(): super.created() {
     this.onResize.listen(_resize);
   }
-  
+
   void attached() {
     super.attached();
     _makeCode();
   }
-  
+
   void _resize(Event evt) {
     evt.preventDefault();
     _makeCode();
   }
-  
+
   int get _jsCorrectionLevel {
     var correctLevel = js.context['QRCode']['CorrectLevel'];
     switch (correctionLevel) {
@@ -78,7 +82,7 @@ class QRCode extends PolymerElement {
         return correctLevel['H'];
     }
   }
-  
+
   /// Called when just the text is changed.
   void _refreshCode() {
     if (_qrCode == null)
@@ -87,8 +91,8 @@ class QRCode extends PolymerElement {
       return _qrCode.callMethod('clear', []);
     _qrCode.callMethod('makeCode', [this.value]);
   }
-  
-  
+
+
   void _makeCode() {
     if (_qrCode != null) {
       _qrCode.callMethod('clear', []);
