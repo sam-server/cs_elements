@@ -3,6 +3,8 @@
 <link rel="import" href="../../../../packages/polymer/polymer.html">
 <link rel="import" href="../../../../packages/core_elements/core_icon.html">
 
+<link rel="import" href="../../generic/input_decorator/input_decorator.html">
+
 <polymer-element name="input-decorator" attributes="icon">
   <template>
     <style>
@@ -13,11 +15,14 @@
         margin-top: 10px;
         border-radius: 5px;
         border: none;
+        display: inline-block;
+        cursor: text;
       }
       
       #container {
-        height: 100%;
+        height: inherit;
       }
+      
       
       #container.focused {
         outline: -webkit-focus-ring-color auto 5px;
@@ -28,8 +33,9 @@
         margin-right: 10px;
         color: white;
       }
+      
     </style>
-    <div id="container" layout horizontal center>
+    <div id="container" layout horizontal center on-click="{{focusInput}}">
       <template if="{{ icon != 'none' }}">
         <core-icon icon="{{icon}}"></core-icon>
       </template>
