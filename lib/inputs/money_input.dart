@@ -81,6 +81,9 @@ class MoneyInput extends PolymerElement with FormInput {
       this.moneyValue.fractionalDigits = money.fractionalDigits;
     }
   }
+
+  @override
+  void focus() => shadowRoot.querySelector('input').focus();
 }
 
 class Money extends Observable {
