@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../form_controls/form_controls.html">
+<link rel="import" href="../../generic/input_decorator/input_decorator.html">
+
+<polymer-element name="editable-textarea">
+<template>
+  <style>
+    #container {
+      background-color: #393844;
+      border-radius: 5px;
+    }
+  
+    input-decorator {
+      height: 120px;  
+    }
+    
+    textarea {
+      height: 90%;
+    }
+    
+    textarea:focus {
+      outline: none; 
+      color: white; 
+    }
+  </style>
+  <span id="container">
+    <input-decorator icon="assignment">
+      <textarea value="{{value}}" placeholder="{{placeholder}}"></textarea>
+    </input-decorator>
+  </span>
+</template>
+<script type="application/dart" src="editable_textarea.dart"></script>
+</polymer-element>
