@@ -39,16 +39,8 @@ class LoginForm extends PolymerElement {
     });
   }
 
-  void checkConfirmPassword() {
-    if (password != confirmPassword) {
-      errorMessage = 'Passwords do not match';
-    } else {
-      errorMessage = '';
-    }
-
-  }
-
   void submitForm(Event e) {
+    //TODO: prevent default not working.
     e.preventDefault();
     if (username == null || username.isEmpty) {
       errorMessage = 'No username provided';
