@@ -7,8 +7,8 @@
 <link rel="import"
 	href="../../../../packages/core_elements/core_icons.html">
 
-<link rel="import" href="../src/editable_textarea.html">
 <link rel="import" href="../../inputs/money_input.html">
+<link rel="import" href="../../generic/input_decorator/input_decorator.html">
 
 <link rel="import" href="../../qrcode/qrcode.html">
 <link rel="import" href="../../form_controls/form_controls.html">
@@ -49,6 +49,12 @@ core-icon.noImage {
 	width: 128px;
 	height: 128px;
 	color: red;
+}
+
+input-decorator {
+  height: 60px;
+  width: 360px;
+  margin-top: 10px;
 }
 
 span.label {
@@ -108,13 +114,15 @@ button {
 		</div>
 		<div layout horizontal center>
 			<!-- <span class="label">Description</span> -->
-			<editable-textarea value="{{asset.description}}"
-				placeholder="Description"></editable-textarea>
+			<input-decorator icon="assignment">
+        <textarea value="{{value}}" placeholder="Description"></textarea>
+      </input-decorator>
 		</div>
 		<div layout horizontal center>
 			<!-- <span class="label">Price</span> -->
-			<input-decorator icon="payment"> <money-input
-				value="{{asset.price}}" placeholder="Price"></money-input> </input-decorator>
+			<input-decorator icon="payment"> 
+			  <money-input value="{{asset.price}}" placeholder="Price"></money-input> 
+		  </input-decorator>
 		</div>
 		<div id="submitCancelContainer" layout horizontal>
 			<button id="saveButton" on-click="{{saveAssetChanges}}" flex>Save</button>
