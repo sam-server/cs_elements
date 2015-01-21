@@ -7,49 +7,69 @@ import 'package:polymer/polymer.dart';
 
 @CustomTag('input-decorator')
 class InputDecorator extends PolymerElement {
+  /// The element tags which are recognised as valid input elements
+  static const List<String> INPUT_TAGS =
+      const [ 'input[is=core-input]',
+              'password-input',
+              'textarea',
+              'money-input',
+            ];
+
 
   @published
-  String get icon => readValue(#icon, () => 'none');
+  String get icon => readValue(#icon);
   set icon(String value) => writeValue(#icon, value);
 
-  InputDecorator.created(): super.created();
+  List<StreamSubscription> _subscriptions;
 
-  List<StreamSubscription> _focusListeners;
-  List<StreamSubscription> _blurListeners;
-
-  Iterable<Element> get inputs {
-    return [
-      this.querySelectorAll('input[is=core-input]'),
-      this.querySelectorAll('password-input'),
-      this.querySelectorAll('textarea'),
-      this.querySelectorAll('money-input'),
-    ].expand((i) => i);
+  InputDecorator.created(): super.created() {
+    this._subscriptions = <StreamSubscription>[];
   }
 
+  /**
+   * Gets the single input-type element (see INPUT_TAGS) which
+   * is a light DOM child of the selector.
+   */
+  Element get input {
+    var inputs = INPUT_TAGS.expand(this.querySelectorAll);
+    try {
+      return inputs.single;
+    } on StateError catch (e) {
+      var msg = 'Only one child of an <input-decorator> can have the tags ';
+      msg += '(${INPUT_TAGS.join(', ')}).\n';
+      msg += 'The following matching children were found:\n\t- ';
+      msg += inputs.join('\n\t- ');
+      throw new StateError(msg);
+    }
+  }
+  @override
   void attached() {
-    _focusListeners = <StreamSubscription>[];
-    _blurListeners = <StreamSubscription>[];
-
-
-    inputs.forEach((elem) {
-      _focusListeners.add(elem.onFocus.listen((evt) {
-        $['container'].classes.add('focused');
-      }));
-      _blurListeners.add(elem.onBlur.listen((evt) {
-        $['container'].classes.remove('focused');
-      }));
-    });
-
+    super.attached();
+    _subscriptions.add(input.onFocus.listen((evt) {
+      $['container'].classes.add('focused');
+    }));
+    _subscriptions.add(input.onBlur.listen((evt) {
+      $['container'].classes.remove('focused');
+    }));
   }
 
-  void focusInput(Event e) {
-    //e.preventDefault();
-    var input = inputs.first;
+  @override
+  void detached() {
+    super.detached();
+    _subscriptions.forEach((subscription) => subscription.cancel());
+  }
+
+  @override
+  void focus() {
+    this.fire('input-decorator-focus');
+    this.classes.add('focus');
     input.focus();
   }
 
-  void detached() {
-    _focusListeners.forEach((subscription) => subscription.cancel());
-    _blurListeners.forEach((subscription) => subscription.cancel());
+  @override
+  void blur() {
+    this.fire('input-decorator-focus');
+    this.classes.remove('focus');
+    input.blur();
   }
 }

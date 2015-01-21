@@ -35,8 +35,8 @@
       }
       
     </style>
-    <div id="container" layout horizontal center on-click="{{focusInput}}">
-      <template if="{{ icon != 'none' }}">
+    <div id="container" layout horizontal center on-click="{{focus}}">
+      <template if="{{ icon != null }}">
         <core-icon icon="{{icon}}"></core-icon>
       </template>
       <content></content>
