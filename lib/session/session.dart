@@ -7,10 +7,6 @@ import 'dart:html';
 import 'package:crypto/crypto.dart' show CryptoUtils;
 
 import 'package:polymer/polymer.dart';
-import 'package:http/src/base_client.dart';
-import 'package:http/src/base_request.dart';
-import 'package:http/src/streamed_response.dart';
-import 'package:http/browser_client.dart';
 
 import 'package:cookies/cookies.dart';
 
@@ -60,31 +56,6 @@ class SessionElement extends PolymerElement {
   SessionClient get httpClient => new SessionClient._(this);
 
   ContextPanel contextPanel;
-}
-
-class SessionClient extends Object with BaseClient {
-  static final _async = new Future.value();
-
-  SessionElement sessionElement;
-
-  BaseClient _baseClient;
-
-  SessionClient._(this.sessionElement):
-    this._baseClient = new BrowserClient();
-
-  @override
-  Future<StreamedResponse> send(BaseRequest request) {
-    return _async.then((_) {
-      print('attching csrf token ${sessionElement.csrfToken}');
-      request.headers['X-CSRFToken'] = sessionElement.csrfToken;
-
-      if (sessionElement.authToken != null) {
-        print('Attaching auth token ${sessionElement.authToken}');
-        request.headers['Authorization'] = '${sessionElement.authToken}';
-      }
-      return _baseClient.send(request);
-    });
-  }
 }
 
 abstract class AuthToken {
