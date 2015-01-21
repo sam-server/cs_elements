@@ -53,8 +53,6 @@ class SessionElement extends PolymerElement {
     this.sessionHeaders['x-csrftoken'] = '$csrfToken';
   }
 
-  SessionClient get httpClient => new SessionClient._(this);
-
   ContextPanel contextPanel;
 }
 
