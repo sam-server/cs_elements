@@ -16,24 +16,38 @@ class PasswordInput extends PolymerElement with FormInput {
   bool get displayMeter => readValue(#displayMeter, () => false);
   set displayMeter(bool value) => writeValue(#displayMeter, value);
 
-  StreamSubscription _inputOnFocus;
-  StreamSubscription _inputOnBlur;
+  List<StreamSubscription> _subscriptions;
 
-  PasswordInput.created(): super.created();
-
-  void attached() {
-    super.attached();
-    _inputOnFocus = shadowRoot.querySelector('input[is=core-input]').onFocus.listen((Event evt) {
-      this.fire('password-input-focus', detail: evt);
-    });
-    _inputOnBlur = shadowRoot.querySelector('input[is=core-input]').onBlur.listen((Event evt) {
-      this.fire('password-input-blur', detail: evt);
-    });
+  PasswordInput.created(): super.created() {
+    _subscriptions = <StreamSubscription>[];
   }
 
+  InputElement get _input => shadowRoot.querySelector('input[is=core-input]');
+
+  @override
+  void attached() {
+    super.attached();
+    _subscriptions.add(_input.onFocus.listen((Event evt) {
+      print('input focused');
+      this.fire('password-input-focus', detail: evt);
+    }));
+    _subscriptions.add(_input.onBlur.listen((Event evt) {
+      this.fire('password-input-blur', detail: evt);
+    }));
+  }
+
+  @override
   void detached() {
-    super.detached();
-    _inputOnFocus.cancel();
-    _inputOnBlur.cancel();
+    _subscriptions.forEach((subscription) => subscription.cancel());
+  }
+
+  @override
+  void focus() {
+    _input.focus();
+  }
+
+  @override
+  void blur() {
+    _input.blur();
   }
 }
