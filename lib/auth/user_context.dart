@@ -1,6 +1,5 @@
 library cs_elements.user_context;
 
-import 'dart:async';
 import 'dart:html';
 
 import 'package:polymer/polymer.dart';
