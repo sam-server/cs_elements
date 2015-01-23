@@ -9,7 +9,7 @@
   <template>
     <style>
       :host {
-        background-color: #393844;
+        /* background-color: #393844; */
         border-radius: 5px;
         border: none;
         display: inline-block;
@@ -20,6 +20,11 @@
         height: inherit;
         width: inherit;
       }
+      
+      #container.readonly {
+        cursor: auto;
+      }
+      
       
       #container.focused {
         outline: aqua auto 5px;

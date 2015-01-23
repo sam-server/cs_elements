@@ -46,11 +46,18 @@ class InputDecorator extends PolymerElement {
   void attached() {
     super.attached();
     _subscriptions.add(input.onFocus.listen((evt) {
-      $['container'].classes.add('focused');
+      if (input.attributes['readonly'] == null) {
+        $['container'].classes.add('focused');
+      }
     }));
     _subscriptions.add(input.onBlur.listen((evt) {
       $['container'].classes.remove('focused');
     }));
+
+    if (input.attributes['readonly'] != null) {
+      $['container'].classes.add('readonly');
+      this.classes.add('readonly');
+    }
   }
 
   @override
