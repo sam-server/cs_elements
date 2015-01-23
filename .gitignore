@@ -1,4 +1,6 @@
 .pub/*
 .project
+.pydevproject
 .settings/*
+
 packages
