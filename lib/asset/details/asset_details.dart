@@ -3,6 +3,7 @@ library cs_elements.asset_details;
 import 'dart:html';
 
 import 'package:polymer/polymer.dart';
+import 'package:polymer_ajax_form/ajax_form.dart';
 
 import '../../session/session.dart';
 import '../base/asset_base.dart';
@@ -28,8 +29,18 @@ class AssetDetails extends PolymerElement with AssetBase {
     asset.dispose();
   }
 
-  void saveAssetChanges() {
+  void saveAssetChanges([Event e]) {
+    e.preventDefault();
+    $['mainform'].submit().then((FormResponse response) {
+      var body = response.responseJson;
+      if (response.status >= 200 && response.status < 300) {
+        print('success');
+        this.asset = new Asset.fromResource(body);
+      } else {
+        print(body);
+      }
 
+    });
   }
 
   void resetAssetChanges() {

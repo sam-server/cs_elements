@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+
+<link rel="import" 
+    href="../../../../packages/core_elements/core_icons.html">
+<link rel="import" href="../details/asset_details_content.html">
+
+<polymer-element name="asset-list-item" attributes="asset">
+<template>
+<style>
+  :host {
+    background-color: #393844;
+  }
+  
+  #outerContainer {
+    width: inherit;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  #header {
+    width: 100%;
+    height: inherit;
+  }
+  
+  #body {
+    width: 80%;
+    display: block;
+  }
+  
+  :host /deep/ input-decorator {
+	  height: 60px;
+	  width: 100%;
+	  margin-top: 10px;  
+	  background-color: #565566;
+	}
+  
+  textarea, :host /deep/ input[is=core-input].field {
+    margin: 5px;
+  }
+
+  :host /deep/ textarea, :host /deep/ money-input, :host /deep/ input {
+	  width: 100%;
+	  resize: none;
+	  border: none;
+	  background-color: transparent;
+	  color: #999999;
+	  outline: none;
+	}
+</style>
+<div id="outerContainer" layout vertical center>
+  <div id="header" layout horizontal center>
+	  <core-icon icon="{{expanded ? 'expand-more' : 'expand-less'}}"
+	             on-click="{{displayDetails}}"></core-icon>
+	  <span flex>{{asset.name}}</span>
+	  <core-icon icon="create"></core-icon> 
+  </div>
+  
+  <template if="{{expanded}}">
+  <div id="body">
+    <asset-details-content asset="{{asset.toJsonString()}}" readonly></asset-details-content>
+  </div>
+  </template> 
+</div>
+</template>
+<script type="application/dart" src="asset_list_item.dart"></script>
+</polymer-element>

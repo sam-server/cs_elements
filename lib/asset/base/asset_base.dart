@@ -13,8 +13,17 @@ abstract class AssetBase implements Polymer, Observable {
   /// The asset associated with the element.
   /// The element should dispose the asset during its detach phase.
   @published
-  Asset get asset => readValue(#asset, () => new Asset());
+  Asset get asset {
+    var value = readValue(#asset, () => new Asset());
+    if (value is String) {
+      value = new Asset.fromResourceString(value);
+    } else if (value is Map<String,dynamic>) {
+      value = new Asset.fromResource(value);
+    }
+    return value;
+  }
   set asset(dynamic value) {
+    print('Setting asset value: $value');
     if (value is String) {
       value = new Asset.fromResourceString(value);
     } else if (value is Map<String,dynamic>) {
@@ -22,6 +31,11 @@ abstract class AssetBase implements Polymer, Observable {
     }
     writeValue(#asset, value);
   }
+  void assetChanged(oldValue, newValue) {
+    print('Asset changed: $newValue');
+  }
+
+
 }
 
 class Asset extends Observable {
@@ -113,7 +127,7 @@ class Asset extends Observable {
   factory Asset.fromResourceString(String resource) =>
       new Asset.fromResource(JSON.decode(resource));
 
-  Map<String,dynamic> toResource() {
+  Map<String,dynamic> toJson() {
     var resource = <String,dynamic>{};
     resource['kind'] = 'assets#asset';
     resource['id'] = this.id;
@@ -129,5 +143,5 @@ class Asset extends Observable {
     return resource;
   }
 
-  String toResourceString() => JSON.encode(toResource());
+  String toJsonString() => JSON.encode(toJson());
 }
