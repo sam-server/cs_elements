@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="import" href="../packages/polymer/polymer.html">
+  <link rel="import" href="../packages/cs_elements/asset/list/asset_list.html">
+  <script type="application/dart">
+    export 'package:polymer/init.dart';
+  </script>
+</head>
+<body fullbleed unresolved>
+  <asset-list assetList="{
+    &quot;next_page_token&quot;: &quot;abcdef12345&quot;,
+    &quot;user_id&quot;: &quot;12345abcdef&quot;,
+    &quot;assets&quot;: [
+      {
+        &quot;name&quot;: &quot;Test Asset&quot;,
+        &quot;qr_code&quot;: &quot;http://localhost:8080/asset_details/asset_details.html&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Test Asset 2&quot;,
+        &quot;qr_code&quot;: &quot;http://localhost:8080/asset_details/asset_details.html&quot;
+      }
+    ]
+  }"></asset-list>
+</body>
+</html>
