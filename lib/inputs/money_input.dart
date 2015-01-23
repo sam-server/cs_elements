@@ -19,6 +19,10 @@ class MoneyInput extends PolymerElement with FormInput {
   String get value => readValue(#value, () => '0.00 AUD');
   set value(String value) => writeValue(#value, value);
 
+  @published
+  bool get readonly => readValue(#readonly, () => false);
+  set readonly(bool value) => writeValue(#readonly, value);
+
   @observable
   Money moneyValue;
 

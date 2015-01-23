@@ -43,7 +43,8 @@
       
     </style>
     <div layout horizontal>
-      <input type="text" value="{{moneyValue.value}}" pattern="\d+(\.?\d+)?"> 
+      <input type="text" value="{{moneyValue.value}}" pattern="\d+(\.?\d+)?"
+             readonly?="{{readonly}}"> 
       <span id="currCode">{{moneyValue.currencyCode}}</span>
     </div>
   </template>
