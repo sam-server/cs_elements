@@ -4,3 +4,8 @@
 .settings/*
 
 packages
+
+# python ignores
+
+__pycache__/
+*.pyc
