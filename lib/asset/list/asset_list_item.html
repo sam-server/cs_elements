@@ -52,9 +52,11 @@
 </style>
 <div id="outerContainer" layout vertical center>
   <div id="header" layout horizontal center>
+	  <!-- 
 	  <core-icon icon="{{expanded ? 'expand-more' : 'expand-less'}}"
 	             on-click="{{displayDetails}}"></core-icon>
-	  <span flex>{{asset.name}}</span>
+	  -->
+	  <span flex on-click="{{navigateTo}}">{{asset.name}}</span>
 	  <core-icon icon="create"></core-icon> 
   </div>
   

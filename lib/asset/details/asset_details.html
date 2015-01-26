@@ -29,9 +29,7 @@
   width: 100%;
 	font-family: sans-serif;
 	background-color: #272732;
-	display: inline-block;
 	padding: 20px;
-	
 }
 
 h1 {
@@ -82,6 +80,16 @@ textarea, :host /deep/ input[is=core-input].field {
 	background-color: transparent;
 	color: #999999;
 	outline: none;
+	font-size: 1em;
+	margin: 0px;
+}
+
+.descriptionDecorator {
+  height: 120px;
+}
+
+:host /deep/ textarea {
+  height: 100px;
 }
 
 #submitCancelContainer {
@@ -99,45 +107,76 @@ button {
   border: none;
 }
 
+input[type=file] {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+#fileSelect {
+  margin-top: 10px;
+  width: 256px;
+  height: 60px;
+}
+
 #saveButton {
   margin-right: 10px;
 }
 </style>
 
-<form is="ajax-form" id="mainform" action="/asset/{{asset.id}}"
-    method="PUT" enctype="application/json"
+<form is="ajax-form" id="mainform" 
+    action="{{create ? '/asset/create' : asset.href}}"
+    method="{{create ? 'POST' : 'PUT'}}" enctype="application/json"
     headers="{{session.sessionHeaders}}"
     layout horizontal>
-	<div id="imageContainer" layout vertical center center-justified>
-		<template if="{{asset.imageSrc != null}}"> <img
-			_src="{{asset.imageSrc}}"> </template>
-		<template if="{{asset.imageSrc == null}}"> <core-icon
-			class="noImage" icon="block"></core-icon>
-		<div>No image provided</div>
-		</template>
+  <div id="left" layout vertical>
+		<div id="imageContainer" layout vertical center center-justified>
+			<template if="{{asset.imageSrc != null}}"> <img
+				_src="{{asset.imageSrc}}"> </template>
+			<template if="{{asset.imageSrc == null}}"> <core-icon
+				class="noImage" icon="block"></core-icon>
+			<div>No image provided</div>
+			</template>
+		</div>
+		<!-- TODO: The file should be uploaded as a separate operation -->
+		<input name="image" type="file" accept="image/*;capture=camera" class="button">
+	  <button id="fileSelect" on-click="{{captureImage}}">Choose asset image</button>
 	</div>
-
 
 	<div id="detailsContainer" layout vertical flex>
 		<div id="namecontainer" layout horizontal center>
-			<h1 flex>{{asset.name}}</h1>
+		  <template if="{{!create}}"> 
+			 <h1 flex>{{asset.name}}</h1>
+	    </template>
+	    <template if="{{create}}">
+	     <h1 flex>New Asset</h1>
+	    </template>
 			<!-- 
        Note: Any value for size smaller than 96x96 will not work.
         -->
 			<cs-qrcode value="{{asset.href}}" height="96" width="96"></cs-qrcode>
 		</div>
+		<template if="{{create}}">
+			<div layout horizontal center>
+			  <input-decorator icon="perm-identity">
+			    <input is="core-input" type="text" name="name" value="{{asset.name}}" placeholder="Name">
+			  </input-decorator>
+			</div>
+		</template>
 		<div layout horizontal center>
 			<!-- <span class="label">Description</span> -->
-			<input-decorator icon="assignment">
-        <textarea value="{{asset.description}}" placeholder="Description"></textarea>
+			<input-decorator icon="assignment" class="descriptionDecorator">
+        <textarea name="description" value="{{asset.description}}" placeholder="Description"></textarea>
       </input-decorator>
 		</div>
 		<div layout horizontal center>
 			<!-- <span class="label">Price</span> -->
-			<input-decorator icon="payment"> 
-			  <money-input value="{{asset.price}}" placeholder="Price"></money-input> 
+			<input-decorator iconSrc="../../../../packages/cs_elements/inputs/money_icon.svg"> 
+			  <money-input name="price" value="{{asset.price}}" placeholder="Price"></money-input> 
 		  </input-decorator>
 		</div>
+		
+		<input type="hidden" name="kind" value="assets#asset">
 		<div id="submitCancelContainer" layout horizontal>
 			<button id="saveButton" on-click="{{saveAssetChanges}}" flex>Save</button>
 			<button on-click="{{resetAssetChanges}}" flex>Reset</button>

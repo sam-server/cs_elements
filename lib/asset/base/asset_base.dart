@@ -1,6 +1,7 @@
 library cs_elements.asset.base;
 
 import 'dart:async';
+import 'dart:html';
 
 import 'package:polymer/polymer.dart';
 import 'dart:convert' show JSON;
@@ -23,7 +24,6 @@ abstract class AssetBase implements Polymer, Observable {
     return value;
   }
   set asset(dynamic value) {
-    print('Setting asset value: $value');
     if (value is String) {
       value = new Asset.fromResourceString(value);
     } else if (value is Map<String,dynamic>) {
@@ -31,10 +31,6 @@ abstract class AssetBase implements Polymer, Observable {
     }
     writeValue(#asset, value);
   }
-  void assetChanged(oldValue, newValue) {
-    print('Asset changed: $newValue');
-  }
-
 
 }
 
@@ -76,34 +72,23 @@ class Asset extends Observable {
 
   StreamSubscription _dirtyObserver;
 
+  void _initResetData() {
+    _resetData[#name] = this.name;
+    _resetData[#description] = this.description;
+    _resetData[#price] = this.price;
+  }
+
   Asset() {
     _resetData = <Symbol,dynamic>{};
-    _dirtyObserver = this.changes.listen((List<PropertyChangeRecord> changes) {
-      changes.forEach((record) {
-        //Currently just two editable fields.
-        if (record.name == #description ||
-            record.name == #price) {
-          // Only want to store the original value
-          if (_resetData[record.name] != null)
-            return;
-          _resetData[record.name] = record.oldValue;
-        }
-      });
-    });
   }
 
   void reset() {
-    if (_resetData[#description] != null)
-      description = _resetData[#description];
-    if (_resetData[#price] != null)
-      price = _resetData[#price];
+    name = _resetData[#name];
+    description = _resetData[#description];
+    price = _resetData[#price];
     // Wait for the event loop to run before clearing the reset data,
     // since the dirty observer will be called with the old value.
     new Future.value().then((_) => _resetData.clear());
-  }
-
-  void dispose() {
-    _dirtyObserver.cancel();
   }
 
   factory Asset.fromResource(Map<String,dynamic> resource){
@@ -115,12 +100,14 @@ class Asset extends Observable {
     asset.description = resource['description'];
     asset.use = resource['use'];
     asset.modelNumber = resource['model_number'];
+    asset.imageSrc = resource['image_src'];
     asset.price = resource['price'];
     if (resource['date_purchased'] != null) {
       asset.datePurchased = DateTime.parse(resource['date_purchased']);
     } else {
       asset.datePurchased = null;
     }
+    asset._initResetData();
     return asset;
   }
 
@@ -136,6 +123,7 @@ class Asset extends Observable {
     resource['description'] = this.description;
     resource['use'] = this.use;
     resource['model_number'] = this.modelNumber;
+    resource['image_src'] = this.imageSrc;
     if (this.price != null)
       resource['price'] = this.price;
     if (this.datePurchased != null)

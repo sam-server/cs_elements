@@ -3,24 +3,25 @@
 
 <link rel="import" href="../../../../packages/polymer/polymer.html">
 
+<link rel="import" href="../../../../packages/core_elements/core_icon_button.html">
+
 <link rel="import" href="asset_list_item.html">
 
 <polymer-element name="asset-list">
 <template>
 <style>
   :host {
-    background-color: block;
     font-family: sans-serif;
     background-color: #272732;
     color: #999999;
     
     display: block;
     padding: 10px;
+    
+    height: inherit;
+    width: inherit;
   }
   
-  #container {
-  
-  }
   
   asset-list-item {
     border-radius: 5px;
@@ -32,6 +33,9 @@
   }
 </style>
 <div id="container" layout vertical>
+  <div id="controls" layout horizontal center end-justified>
+    <core-icon-button icon="add" on-click="{{createAsset}}">New asset</core-icon>
+  </div>
   <template repeat="{{asset in assetList.assets}}">
     <asset-list-item asset="{{asset.toJsonString()}}"></asset-list-item>
   </template>

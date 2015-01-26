@@ -12,6 +12,10 @@ import '../base/asset_base.dart';
 @CustomTag('asset-details')
 class AssetDetails extends PolymerElement with AssetBase {
 
+  @PublishedProperty(reflect: true)
+  bool get create => readValue(#create, () => false);
+  set create(bool value) => writeValue(#create, value);
+
   @observable
   SessionElement session;
 
@@ -26,24 +30,50 @@ class AssetDetails extends PolymerElement with AssetBase {
 
   void detached() {
     super.detached();
-    asset.dispose();
   }
 
   void saveAssetChanges([Event e]) {
-    e.preventDefault();
+    if (e != null)
+      e.preventDefault();
     $['mainform'].submit().then((FormResponse response) {
+      print(response.responseText);
       var body = response.responseJson;
       if (response.status >= 200 && response.status < 300) {
-        print('success');
+        if (create) {
+          this.create = false;
+        }
+
         this.asset = new Asset.fromResource(body);
       } else {
         print(body);
       }
-
     });
   }
 
-  void resetAssetChanges() {
+  void resetAssetChanges([Event e]) {
+    if (e != null)
+      e.preventDefault();
     asset.reset();
+  }
+
+  void captureImage([Event e]) {
+    if (e != null)
+      e.preventDefault();
+    var fileInput = shadowRoot.querySelector('input[type=file');
+    fileInput.onChange.first.then((Event e) {
+      if (fileInput.files.isNotEmpty) {
+        var file = fileInput.files.first;
+        _loadFileIntoAsset(file);
+      }
+    });
+    fileInput.click();
+  }
+
+  void _loadFileIntoAsset(File file) {
+    var fileReader = new FileReader();
+    fileReader.onLoad.first.then((_) {
+      asset.imageSrc = fileReader.result;
+    });
+    fileReader.readAsDataUrl(file);
   }
 }

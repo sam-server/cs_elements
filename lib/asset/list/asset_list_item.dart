@@ -1,6 +1,8 @@
 
 library cs_elements.asset_list_item;
 
+import 'dart:html';
+
 import 'package:polymer/polymer.dart';
 import '../base/asset_base.dart';
 
@@ -26,5 +28,9 @@ class AssetListItem extends PolymerElement with AssetBase {
 
   void displayDetails() {
     expanded = !expanded;
+  }
+
+  void navigateTo() {
+    window.location.href = '/asset/${asset.id}';
   }
 }

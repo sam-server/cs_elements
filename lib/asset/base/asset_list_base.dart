@@ -52,7 +52,7 @@ class AssetListResource extends Observable {
     var json = <String,dynamic>{};
     json['nextPageToken'] = nextPageToken;
     json['userId'] = userId;
-    json['assets'] = new List.from(assets.map((asset) => asset.toResource()));
+    json['assets'] = new List.from(assets.map((asset) => asset.toJson()));
     return json;
   }
 
