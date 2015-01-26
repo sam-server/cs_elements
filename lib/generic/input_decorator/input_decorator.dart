@@ -9,7 +9,7 @@ import 'package:polymer/polymer.dart';
 class InputDecorator extends PolymerElement {
   /// The element tags which are recognised as valid input elements
   static const List<String> INPUT_TAGS =
-      const [ 'input[is=core-input]',
+      const [ 'input',
               'password-input',
               'textarea',
               'money-input',
@@ -19,6 +19,10 @@ class InputDecorator extends PolymerElement {
   @published
   String get icon => readValue(#icon);
   set icon(String value) => writeValue(#icon, value);
+
+  @published
+  String get iconSrc => readValue(#iconSrc);
+  set iconSrc(String value) => writeValue(#iconSrc, value);
 
   List<StreamSubscription> _subscriptions;
 

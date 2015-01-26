@@ -34,12 +34,19 @@
         margin-left: 10px;
         margin-right: 10px;
         color: white;
+        width: 24px;
+        height: 24px;
+      }
+      
+      core-icon /deep/ div {
+        height: 24px;
+        width: 24px;
       }
       
     </style>
     <div id="container" layout horizontal center on-click="{{focus}}">
-      <template if="{{ icon != null }}">
-        <core-icon icon="{{icon}}"></core-icon>
+      <template if="{{ icon != null || iconSrc != null }}">
+        <core-icon src="{{iconSrc}}" icon="{{icon}}"></core-icon>
       </template>
       <content></content>
     </div>
