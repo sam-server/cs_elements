@@ -94,6 +94,9 @@ class Money extends Observable {
   static final REGEX = new RegExp(r'([-+]?\d+\.(\d+)) ([A-Z]{3})$');
 
   static Money parse(String value) {
+    if (value == null) {
+      value = '0.00 AUD';
+    }
     var match = REGEX.matchAsPrefix(value);
     if (match == null)
       throw new FormatException('Monetary value must match ${REGEX.pattern}');
