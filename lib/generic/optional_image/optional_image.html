@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../../packages/core_elements/core_icons.html">
+
+<polymer-element name="optional-image" attributes="src">
+<template>
+<style>
+
+:host {
+  /* display: table; */
+  box-sizing: content-box;
+}
+
+#content {
+  width: inherit;
+  height: inherit;
+}
+
+:host img {
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+}
+
+:host core-icon[icon=block] {
+  width: 128px;
+  height: 128px;
+  color: red;
+}
+  
+</style>
+
+<div id="content" layout vertical center center-justified>
+  <template if="{{src != null}}"><img _src="{{src}}"></template>
+  <template if="{{src == null}}">
+    <core-icon icon="block"></core-icon>
+    <div>No image Provided</div>
+  </template>
+</div>
+
+</template>
+<script type="application/dart" src="optional_image.dart"></script>
+</polymer-element>
