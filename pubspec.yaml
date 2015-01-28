@@ -7,7 +7,7 @@ dependencies:
   polymer: any
   polymer_ajax_form:
     path: /Users/ovangle/Programming/sam_server3_workspace/polymer_ajax_form
-  quiver: '>=0.18.0'
+  quiver: '>=0.20.0'
   rational: any
 dev_dependencies:
   unittest: any
