@@ -38,7 +38,8 @@ class Asset extends Observable {
 
   Map<Symbol, dynamic> _resetData;
 
-  bool get isDirty => _resetData.isNotEmpty;
+  @observable
+  bool isDirty;
 
   @observable
   String id;
@@ -76,19 +77,32 @@ class Asset extends Observable {
     _resetData[#name] = this.name;
     _resetData[#description] = this.description;
     _resetData[#price] = this.price;
+    _resetData[#imageSrc] = this.imageSrc;
+  }
+
+  bool _checkDirty() {
+    return _resetData[#name] != this.name ||
+           _resetData[#description] != this.description ||
+           _resetData[#price] != this.price ||
+           _resetData[#imageSrc] != this.imageSrc;
   }
 
   Asset() {
     _resetData = <Symbol,dynamic>{};
+    _dirtyObserver = changes.listen((changes) {
+      changes.forEach((PropertyChangeRecord change) {
+        if (change.name == #isDirty)
+          return;
+        this.isDirty = _checkDirty();
+      });
+    });
   }
 
   void reset() {
     name = _resetData[#name];
     description = _resetData[#description];
     price = _resetData[#price];
-    // Wait for the event loop to run before clearing the reset data,
-    // since the dirty observer will be called with the old value.
-    new Future.value().then((_) => _resetData.clear());
+    imageSrc = _resetData[#imageSrc];
   }
 
   factory Asset.fromResource(Map<String,dynamic> resource){

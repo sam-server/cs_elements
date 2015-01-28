@@ -12,176 +12,71 @@
 
 <link rel="import" href="../../inputs/money_input.html">
 <link rel="import" href="../../generic/input_decorator/input_decorator.html">
+<link rel="import" href="../../generic/optional_image/optional_image.html">
 
 <link rel="import" href="../../qrcode/qrcode.html">
 <link rel="import" href="../../form_controls/form_controls.html">
 
 <polymer-element name="asset-details"> 
 <template>
-<style>
-* {
-  box-sizing: border-box;
-}
-
-:host {
-  box-sizing: border-box;
-  height: 100%;
-  width: 100%;
-	font-family: sans-serif;
-	background-color: #272732;
-	padding: 20px;
-}
-
-h1 {
-	color: white;
-}
-
-#imageContainer {
-	width: 256px;
-	height: 256px;
-	background-color: white;
-	border: 1px solid black;
-	border-radius: 5px;
-	margin-right: 20px;
-}
-
-
-img {
-	width: inherit;
-	height: inherit;
-}
-
-core-icon.noImage {
-	width: 128px;
-	height: 128px;
-	color: red;
-}
-
-input-decorator {
-  height: 60px;
-  width: 360px;
-  margin-top: 10px;
-  
-  background-color: #565566;
-}
-
-span.label {
-	margin-right: 10px;
-}
-
-textarea, :host /deep/ input[is=core-input].field {
-	margin: 5px;
-}
-
-:host /deep/ textarea, :host /deep/ money-input, :host /deep/ input {
-	width: 100%;
-	resize: none;
-	border: none;
-	background-color: transparent;
-	color: #999999;
-	outline: none;
-	font-size: 1em;
-	margin: 0px;
-}
-
-.descriptionDecorator {
-  height: 120px;
-}
-
-:host /deep/ textarea {
-  height: 100px;
-}
-
-#submitCancelContainer {
-  margin-top: 10px;
-  height: 60px;
-  width: 360px;
-}
-
-button {
-  background-color: #1cce77;
-  color: white;
-  font: inherit;
-  cursor: pointer;
-  border-radius: 5px;
-  border: none;
-}
-
-input[type=file] {
-  visibility: hidden;
-  width: 0;
-  height: 0;
-}
-
-#fileSelect {
-  margin-top: 10px;
-  width: 256px;
-  height: 60px;
-}
-
-#saveButton {
-  margin-right: 10px;
-}
-</style>
+<link rel="stylesheet" href="../../generic/common.css">
+<link rel="stylesheet" href="asset_details.css">
 
 <form is="ajax-form" id="mainform" 
-    action="{{create ? '/asset/create' : asset.href}}"
-    method="{{create ? 'POST' : 'PUT'}}" enctype="application/json"
-    headers="{{session.sessionHeaders}}"
-    layout horizontal>
-  <div id="left" layout vertical>
-		<div id="imageContainer" layout vertical center center-justified>
-			<template if="{{asset.imageSrc != null}}"> <img
-				_src="{{asset.imageSrc}}"> </template>
-			<template if="{{asset.imageSrc == null}}"> <core-icon
-				class="noImage" icon="block"></core-icon>
-			<div>No image provided</div>
-			</template>
-		</div>
-		<!-- TODO: The file should be uploaded as a separate operation -->
-		<input name="image" type="file" accept="image/*;capture=camera" class="button">
-	  <button id="fileSelect" on-click="{{captureImage}}">Choose asset image</button>
-	</div>
-
-	<div id="detailsContainer" layout vertical flex>
-		<div id="namecontainer" layout horizontal center>
-		  <template if="{{!create}}"> 
-			 <h1 flex>{{asset.name}}</h1>
-	    </template>
-	    <template if="{{create}}">
-	     <h1 flex>New Asset</h1>
-	    </template>
-			<!-- 
-       Note: Any value for size smaller than 96x96 will not work.
-        -->
-			<cs-qrcode value="{{asset.href}}" height="96" width="96"></cs-qrcode>
-		</div>
-		<template if="{{create}}">
-			<div layout horizontal center>
-			  <input-decorator icon="perm-identity">
-			    <input is="core-input" type="text" name="name" value="{{asset.name}}" placeholder="Name">
-			  </input-decorator>
-			</div>
-		</template>
-		<div layout horizontal center>
-			<!-- <span class="label">Description</span> -->
-			<input-decorator icon="assignment" class="descriptionDecorator">
-        <textarea name="description" value="{{asset.description}}" placeholder="Description"></textarea>
-      </input-decorator>
-		</div>
-		<div layout horizontal center>
-			<!-- <span class="label">Price</span> -->
-			<input-decorator iconSrc="../../../../packages/cs_elements/inputs/money_icon.svg"> 
-			  <money-input name="price" value="{{asset.price}}" placeholder="Price"></money-input> 
-		  </input-decorator>
-		</div>
-		
-		<input type="hidden" name="kind" value="assets#asset">
-		<div id="submitCancelContainer" layout horizontal>
-			<button id="saveButton" on-click="{{saveAssetChanges}}" flex>Save</button>
-			<button on-click="{{resetAssetChanges}}" flex>Reset</button>
-		</div>
-	</div>
+      action="{{create ? '/asset/create' : asset.href}}"
+      method="{{create ? 'POST' : 'PUT'}}" enctype="application/json"
+      headers="{{session.sessionHeaders}}"
+      layout vertical flex>
+   <header layout horizontal center-justified>
+     <div flex style="flex: 2" layout horizontal>
+      `<cs-qrcode value="{{asset.href}}" height="96" width="96"></cs-qrcode>
+	     <template if="{{!create}}">
+	      <h1 layout horizontal center start-justified flex>{{asset.name}}</h1></template>
+	     <template if="{{create}}">
+	      <h1 layout horizontal center start-justified flex>New asset</h1>
+	     </template>
+	   </div>
+     <div flex style="flex: 1">
+     <template if="{{asset.isDirty}}">
+		    <div id="submitCancelContainer" layout horizontal center-justified>
+		      <button id="saveButton" on-click="{{saveAssetChanges}}">Save</button>
+		      <button on-click="{{resetAssetChanges}}">Reset</button>
+		    </div>
+		 </template>
+		 </div>
+   </header>
+   
+   <div id="innerContent" layout horizontal flex>
+	   <div class="detailsContainer" layout vertical flex>
+	     <template if="{{create}}">
+	       <input-decorator icon="perm-identity">
+	         <input is="core-input" type="text" name="name" value="{{asset.name}}" placeholder="Name">
+	       </input-decorator>
+	     </template>
+	       <input-decorator icon="assignment" class="descriptionDecorator">
+	         <textarea name="description" value="{{asset.description}}" placeholder="Description"></textarea>
+	       </input-decorator>
+	       <input-decorator iconsrc="../../../../packages/cs_elements/inputs/money_icon.svg">
+	         <money-input name="price" value="{{asset.price}}" placeholder="Price"></money-input>
+	       </input-decorator>
+	     <input-decorator iconsrc="../../../../packages/cs_elements/generic/icons/Wrench_font_awesome.svg">
+	       <input is="core-input" type="text" name="use" value="{{asset.use}}" placeholder="Use">
+	     </input-decorator>
+	     <input-decorator>
+	       <input is="core-input" type="text" name="model_number" value="{{asset.modelNumber}}" placeholder="Model number">
+	     </input-decorator>
+	   </div>
+	   <div class="detailsContainer padLeft" layout vertical flex center>
+	     <optional-image src="{{asset.imageSrc}}"></optional-image>
+	     <!-- TODO: Should changing the image be a separate operation? -->
+	     <input type="file" accept="image/*" capture name="image">
+	     <button id="fileSelect" on-click="{{captureImage}}">Change image</button>
+	     
+       
+	   </div>
+   </div>
+  
+   <input type="hidden" name="kind" value="assets#asset">  
 </form>
 </template> 
 <script type="application/dart" src="asset_details.dart"></script> 

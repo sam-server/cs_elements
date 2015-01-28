@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  box-sizing: border-box;
+  height: inherit;
+  width: inherit;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#mainform {
+  display: block;
+}
+
+header {
+	margin-bottom: 30px;
+}
+
+
+header h1 {
+	color: white;
+	margin-left: 20px;
+}
+
+optional-image {
+	width: 256px;
+	height: 256px;
+	min-height: 256px;
+	background-color: white;
+	margin-right: 20px;
+	margin-top: 10px;
+	border-radius: 5px;
+}
+
+cs-qrcode {
+	border-radius: 5px;
+}
+
+
+input-decorator {
+  height: 60px;
+  width: 100%;
+  margin-top: 10px;
+  
+  background-color: #565566;
+}
+
+div.padLeft {
+	padding-left: 10px;
+}
+
+span.label {
+  margin-right: 10px;
+}
+
+textarea, :host /deep/ input[is=core-input].field {
+  margin: 5px;
+}
+
+:host /deep/ textarea, :host /deep/ money-input, :host /deep/ input {
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  color: #999999;
+  outline: none;
+  font-size: 1em;
+  margin: 0px;
+}
+
+.descriptionDecorator {
+  height: 120px;
+}
+
+:host /deep/ textarea {
+  height: 100px;
+}
+
+#submitCancelContainer {
+  margin-top: 10px;
+  height: 60px;
+  padding-right: 10px;
+}
+
+button {
+  background-color: #1cce77;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  width: 120px;
+  height: 60px;
+}
+
+:host div {
+	box-sizing: content-box;
+}
+
+input[type=file] {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+#fileSelect {
+  margin-top: 10px;
+  /* width: 256px; */
+  height: 60px;
+}
+
+#saveButton {
+  margin-right: 10px;
+}
