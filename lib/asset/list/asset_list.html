@@ -34,7 +34,7 @@
 </style>
 <div id="container" layout vertical>
   <div id="controls" layout horizontal center end-justified>
-    <core-icon-button icon="add" on-click="{{createAsset}}">New asset</core-icon>
+    <core-icon-button icon="add" on-click="{{createAsset}}">New asset</core-icon-button>
   </div>
   <template repeat="{{asset in assetList.assets}}">
     <asset-list-item asset="{{asset.toJsonString()}}"></asset-list-item>

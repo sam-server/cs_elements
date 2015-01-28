@@ -9,12 +9,7 @@ import '../base/asset_base.dart';
 @CustomTag('asset-list-item')
 class AssetListItem extends PolymerElement with AssetBase {
 
-  @observable
-  bool expanded;
-
-  AssetListItem.created(): super.created() {
-    this.expanded = false;
-  }
+  AssetListItem.created(): super.created();
 
   @override
   void attached() {
@@ -24,10 +19,6 @@ class AssetListItem extends PolymerElement with AssetBase {
   @override
   void detached() {
     super.detached();
-  }
-
-  void displayDetails() {
-    expanded = !expanded;
   }
 
   void navigateTo() {

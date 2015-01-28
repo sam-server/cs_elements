@@ -57,13 +57,7 @@
 	  -->
 	  <span flex on-click="{{navigateTo}}">{{asset.name}}</span>
 	  <core-icon icon="create"></core-icon> 
-  </div>
-  
-  <template if="{{expanded}}">
-  <div id="body">
-    <asset-details-content asset="{{asset.toJsonString()}}" readonly></asset-details-content>
-  </div>
-  </template> 
+  </div> 
 </div>
 </template>
 <script type="application/dart" src="asset_list_item.dart"></script>
