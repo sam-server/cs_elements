@@ -1,4 +1,4 @@
-html {
+html /deep/ * {
 	box-sizing: border-box;
 	font-family: sans-serif;
 }
@@ -26,5 +26,17 @@ time, mark, audio, video {
   border: 0;
   font-size: 100%;
   vertical-align: baseline;
+}
+
+html /deep/ h1 {
+	font-size: 2em;
+}
+
+img.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 96px;
+  cursor: pointer;
 }
 
