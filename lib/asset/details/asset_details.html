@@ -28,7 +28,7 @@
       layout vertical flex>
    <header layout horizontal center-justified>
      <div flex style="flex: 2" layout horizontal>
-      `<cs-qrcode value="{{asset.href}}" height="96" width="96"></cs-qrcode>
+      <cs-qrcode value="{{asset.href}}" height="96" width="96"></cs-qrcode>
 	     <template if="{{!create}}">
 	      <h1 layout horizontal center start-justified flex>{{asset.name}}</h1></template>
 	     <template if="{{create}}">
@@ -70,8 +70,6 @@
 	     <!-- TODO: Should changing the image be a separate operation? -->
 	     <input type="file" accept="image/*" capture name="image">
 	     <button id="fileSelect" on-click="{{captureImage}}">Change image</button>
-	     
-       
 	   </div>
    </div>
   
