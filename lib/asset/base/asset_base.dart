@@ -78,13 +78,17 @@ class Asset extends Observable {
     _resetData[#description] = this.description;
     _resetData[#price] = this.price;
     _resetData[#imageSrc] = this.imageSrc;
+    _resetData[#use] = this.use;
+    _resetData[#modelNumber] = this.modelNumber;
   }
 
   bool _checkDirty() {
     return _resetData[#name] != this.name ||
            _resetData[#description] != this.description ||
            _resetData[#price] != this.price ||
-           _resetData[#imageSrc] != this.imageSrc;
+           _resetData[#imageSrc] != this.imageSrc ||
+           _resetData[#use] != this.use ||
+           _resetData[#modelNumber] != this.modelNumber;
   }
 
   Asset() {
@@ -103,12 +107,14 @@ class Asset extends Observable {
     description = _resetData[#description];
     price = _resetData[#price];
     imageSrc = _resetData[#imageSrc];
+    use = _resetData[#use];
+    modelNumber = _resetData[#modelNumber];
   }
 
   factory Asset.fromResource(Map<String,dynamic> resource){
     var asset = new Asset();
     asset.id = resource['id'];
-    asset.userId = resource['userId'];
+    asset.userId = resource['user_id'];
     asset.href = resource['qr_code'];
     asset.name = resource['name'];
     asset.description = resource['description'];
