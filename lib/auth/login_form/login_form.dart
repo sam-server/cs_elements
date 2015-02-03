@@ -26,6 +26,9 @@ class LoginForm extends PolymerElement {
   @observable
   SessionElement session;
 
+  @published
+  String callback;
+
   AjaxFormElement get _form => shadowRoot.querySelector('form[is=ajax-form]');
 
   LoginForm.created(): super.created() {
@@ -39,6 +42,7 @@ class LoginForm extends PolymerElement {
     });
   }
 
+
   void submitForm(Event e) {
     //TODO: prevent default not working.
     e.preventDefault();
@@ -51,12 +55,14 @@ class LoginForm extends PolymerElement {
       errorMessage = '';
     }
 
-    print('submitting form');
     _form.submit().then((FormResponse response) {
       if (response.status >= 200 && response.status < 300) {
         // TODO: Should set session values. At the moment just
          // reload the page.
-         window.location.href = '/';
+        window.location.href =
+            callback != null
+            ? Uri.decodeComponent(callback)
+            : '/';
       } else {
         errorMessage = UTF8.decode(response.content);
       }

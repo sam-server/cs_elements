@@ -9,6 +9,8 @@ import '../session/session.dart';
 @CustomTag('user-context')
 class UserContext extends PolymerElement {
 
+  static final _CB_PATTERN = new RegExp(r'.*cb=([^&]+)');
+
   @observable
   SessionElement session;
 
@@ -20,6 +22,9 @@ class UserContext extends PolymerElement {
   @observable
   String mode;
 
+  @observable
+  String callback;
+
   UserContext.created(): super.created() {
     mode = "login";
   }
@@ -28,6 +33,11 @@ class UserContext extends PolymerElement {
     Polymer.onReady.then((_) {
       session = document.querySelector('cs-session');
     });
+
+    var cb_match = _CB_PATTERN.matchAsPrefix(window.location.search);
+    if (cb_match != null) {
+      this.callback = Uri.decodeQueryComponent(cb_match.group(1));
+    }
   }
 
 }

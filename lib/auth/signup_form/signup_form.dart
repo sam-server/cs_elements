@@ -11,6 +11,9 @@ import 'package:cs_elements/session/session.dart';
 @CustomTag('signup-form')
 class SignupForm extends PolymerElement {
 
+  @published
+  String callback;
+
   @observable
   String username;
 
@@ -92,7 +95,10 @@ class SignupForm extends PolymerElement {
       print(response.responseText);
       var body = JSON.decode(UTF8.decode(response.content));
       if (response.status >= 200 && response.status < 300) {
-        window.location.href = '/';
+        window.location.href =
+            callback != null
+            ? Uri.decodeComponent(callback)
+            : '/';
       } else {
         this.errorMessage = body['error'];
       }

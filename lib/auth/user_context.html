@@ -107,10 +107,10 @@
     </div>
     <div id="formContainer" flex>
 	    <template if="{{mode == 'login'}}">
-	      <login-form id="userForm" fit></login-form>
+	      <login-form id="userForm" callback="{{callback}}" fit></login-form>
 	    </template>
 	    <template if="{{mode == 'signup'}}">
-	      <signup-form id="userForm" fit></signup-form>
+	      <signup-form id="userForm" callback="{{callback}}" fit></signup-form>
 	    </template>
     </div>
   </div>
