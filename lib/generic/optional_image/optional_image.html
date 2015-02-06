@@ -2,20 +2,22 @@
 <!DOCTYPE html>
 
 <link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../../packages/core_elements/core_icon_button.html">
 <link rel="import" href="../../../../packages/core_elements/core_icons.html">
+<link rel="import" href="../../../../packages/core_elements/core_media_query.html">
 
 <polymer-element name="optional-image" attributes="src">
 <template>
 <style>
 
 :host {
-  /* display: table; */
   box-sizing: content-box;
 }
 
 #content {
   width: inherit;
   height: inherit;
+  position: relative;
 }
 
 :host img {
@@ -29,10 +31,39 @@
   height: 128px;
   color: red;
 }
-  
+
+input[type=file] {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+#controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+core-icon-button {
+  background-color: #565566;
+  color: white;
+  float: right;
+  border-radius: 5px;
+}
 </style>
 
 <div id="content" layout vertical center center-justified>
+  <core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}">
+  </core-media-query>
+
+  <input type="file" accept="image/*" capture name="image">
+  <template if="{{phoneScreen || showControls}}">
+  <div id="controls">
+    <core-icon-button icon="delete" id="clear" on-click="{{clearImage}}"></core-icon-button>
+    <core-icon-button icon="create" id="choose" on-click="{{chooseImage}}"></core-icon-button>
+  </div>
+  </template>
+
   <template if="{{src != null}}"><img _src="{{src}}"></template>
   <template if="{{src == null}}">
     <core-icon icon="block"></core-icon>
