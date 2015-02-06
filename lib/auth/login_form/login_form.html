@@ -31,6 +31,10 @@
         height: 1em;
         margin-top: 10px;
       }
+      
+      .inputContainer {
+        width: 80%;
+      }
     </style>
     
     <form is="ajax-form" enctype="application/json"
@@ -38,7 +42,7 @@
                          method="POST"
                          handleAs="json"
                          layout vertical center>
-      <div id="inputContainer" layout vertical center>
+      <div class="inputContainer" layout vertical center>
         <input-decorator icon="account-box">
           <input is="core-input" type="text" name="username" class="formInput"
                  value="{{username}}"
@@ -62,7 +66,7 @@
          -->
         <input type="hidden" name="kind" value="authentication#user">
       </div>
-      <div flex layout vertical end-justified>
+      <div class="inputContainer" flex layout vertical center end-justified>
        <button class="formInputContainer" id="loginButton" on-click="{{submitForm}}">Log in</button>   
       </div>
     </form>

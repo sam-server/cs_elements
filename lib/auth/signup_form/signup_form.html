@@ -25,7 +25,6 @@
       
       .formInputContainer {
         height: 60px;
-        width: 360px;
         background-color: #393844;
         margin-top: 10px;
         border-radius: 5px;
@@ -48,9 +47,13 @@
       }
       
       password-input[name=password] {
-        width: 100%;
+        width: 60%;
         height: 100%;
         
+      }
+      
+      .inputContainer {
+        width: 80%;
       }
     </style>
     
@@ -60,7 +63,7 @@
                          id="mainform" 
                          action="/auth/register"
                          layout vertical center>
-       <div id="inputContainer" layout vertical center>
+       <div class="inputContainer" layout vertical center>
          <input-decorator icon="account-box">
            <input is="core-input" type="text" name="username" placeholder="Username" 
                   value="{{username}}" required on-blur="{{validateForm}}"
@@ -92,7 +95,7 @@
         
          <input type="hidden" name="auth_type" value="userpass"/> 
       </div>
-	    <div flex layout vertical end-justified>
+	    <div class="inputContainer" flex layout vertical center end-justified>
 	      <button class="formInputContainer" on-click="{{submitForm}}">Sign up</button>
       </div>
     </form>

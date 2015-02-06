@@ -17,9 +17,10 @@
       font-size: 1em;
       color: #999999;
         
-      width: 486px;
-      height: 500px;
-      background-color: #272732;
+      width: 100%;
+      height: 100%;
+      max-width: 360px;
+      max-height: 486px;
       display: inline-block;
       overflow-y: auto;
     }
@@ -52,8 +53,8 @@
     }
     
     :host /deep/ .formInputContainer {
-      height: 60px;
-       width: 360px;
+       height: 60px;
+       width: 100%;
        background-color: #393844;
        margin-top: 10px;
        border-radius: 5px;
@@ -73,7 +74,7 @@
     }
     
     :host /deep/ input[is=core-input].formInput {
-      width: 100%;
+      width: 60%;
       margin-top: 2px;
       border-radius: 2px;
       color: #999999;
@@ -89,7 +90,7 @@
     
     :host /deep/ input-decorator {
 		  height: 60px;
-		  width: 360px;
+		  width: 100%;
 		  margin-top: 10px;
       background-color: #565566;
 		}
