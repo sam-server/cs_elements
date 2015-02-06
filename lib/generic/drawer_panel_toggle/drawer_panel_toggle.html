@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../../packages/core_elements/core_icons.html">
+
+<polymer-element name="drawer-panel-toggle" attributes="expanded">
+<template>
+<style>
+  :host {
+  }
+  
+  #container {
+    height: 100%;
+  }
+
+  #content {
+    height: 60px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #999999;
+  }
+  
+  #content:hover {
+    background-color: #AAAAAA;
+  }
+    
+  core-icon {
+    color: white;
+  }
+</style>
+<div id="container" layout vertical end center-justified>
+  <div id="content" class="{{expanded ? 'shown': ''}}" layout vertical center center-justified>
+    <core-icon icon="chevron-right"></core-icon>
+  </div>
+</div>
+</template>
+<script type="application/dart" src="drawer_panel_toggle.dart"></script>
+</polymer-element>
