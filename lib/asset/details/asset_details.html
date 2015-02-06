@@ -6,6 +6,8 @@
 	href="../../../../packages/core_elements/core_input.html">
 <link rel="import"
 	href="../../../../packages/core_elements/core_icons.html">
+<link rel="import"
+  href="../../../../packages/core_elements/core_media_query.html">
 	
 <link rel="import"
   href="../../../../packages/polymer_ajax_form/ajax_form.html">
@@ -21,11 +23,15 @@
 <template>
 <link rel="stylesheet" href="asset_details.css">
 
+<core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
+
 <form is="ajax-form" id="mainform" 
       action="{{create ? '/asset/create' : asset.href}}"
       method="{{create ? 'POST' : 'PUT'}}" enctype="application/json"
       headers="{{session.sessionHeaders}}"
       layout vertical flex>
+      
+
    <header layout horizontal center-justified>
      <div flex style="flex: 2" layout horizontal>
       <cs-qrcode value="{{asset.href}}" height="96" width="96"></cs-qrcode>
@@ -36,7 +42,7 @@
 	     </template>
 	   </div>
      <div flex style="flex: 1">
-     <template if="{{asset.isDirty}}">
+     <template if="{{asset.isDirty && !phoneScreen}}">
 		    <div id="submitCancelContainer" layout horizontal center-justified>
 		      <button id="saveButton" on-click="{{saveAssetChanges}}">Save</button>
 		      <button on-click="{{resetAssetChanges}}">Reset</button>
@@ -46,18 +52,23 @@
    </header>
    
    <div id="innerContent" layout horizontal flex>
-	   <div class="detailsContainer" layout vertical flex>
+	   <div class="detailsContainer" layout vertical>
 	     <template if="{{create}}">
 	       <input-decorator icon="perm-identity">
 	         <input is="core-input" type="text" name="name" value="{{asset.name}}" placeholder="Name">
 	       </input-decorator>
 	     </template>
-	       <input-decorator icon="assignment" class="descriptionDecorator">
-	         <textarea name="description" value="{{asset.description}}" placeholder="Description"></textarea>
-	       </input-decorator>
-	       <input-decorator iconsrc="../../../../packages/cs_elements/inputs/money_icon.svg">
-	         <money-input name="price" value="{{asset.price}}" placeholder="Price"></money-input>
-	       </input-decorator>
+	     <template if="{{phoneScreen}}">
+	       <div layout horizontal center-justified>
+          <optional-image class="mobileFlow" src="{{asset.imageSrc}}"></optional-image>
+         </div>
+       </template>
+       <input-decorator icon="assignment" class="descriptionDecorator">
+         <textarea name="description" value="{{asset.description}}" placeholder="Description"></textarea>
+       </input-decorator>
+       <input-decorator iconsrc="../../../../packages/cs_elements/inputs/money_icon.svg">
+         <money-input name="price" value="{{asset.price}}" placeholder="Price"></money-input>
+       </input-decorator>
 	     <input-decorator iconsrc="../../../../packages/cs_elements/generic/icons/Wrench_font_awesome.svg">
 	       <input is="core-input" type="text" name="use" value="{{asset.use}}" placeholder="Use">
 	     </input-decorator>
@@ -65,13 +76,21 @@
 	       <input is="core-input" type="text" name="model_number" value="{{asset.modelNumber}}" placeholder="Model number">
 	     </input-decorator>
 	   </div>
-	   <div class="detailsContainer padLeft" layout vertical flex center>
-	     <optional-image src="{{asset.imageSrc}}"></optional-image>
-	     <!-- TODO: Should changing the image be a separate operation? -->
-	     <input type="file" accept="image/*" capture name="image">
-	     <button id="fileSelect" on-click="{{captureImage}}">Change image</button>
-	   </div>
+	   <!-- FIXME: Repetition of this element needs to be refactored -->
+	   <template if="{{!phoneScreen}}">
+		   <div class="detailsContainer padLeft" layout vertical center>
+		     <optional-image src="{{asset.imageSrc}}"></optional-image>
+		   </div>
+	   </template>
    </div>
+   
+   <!-- FIXME: This repetition needs to be removed -->
+   <template if="{{asset.isDirty && phoneScreen}}">
+      <div id="submitCancelContainer" layout horizontal center-justified>
+        <button id="saveButton" on-click="{{saveAssetChanges}}">Save</button>
+        <button on-click="{{resetAssetChanges}}">Reset</button>
+      </div>
+   </template>
   
    <input type="hidden" name="kind" value="assets#asset">  
 </form>

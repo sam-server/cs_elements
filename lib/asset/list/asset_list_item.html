@@ -15,6 +15,7 @@
   
   #outerContainer {
     width: inherit;
+    height: 100%;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -55,7 +56,7 @@
 	  <core-icon icon="{{expanded ? 'expand-more' : 'expand-less'}}"
 	             on-click="{{displayDetails}}"></core-icon>
 	  -->
-	  <span flex on-click="{{navigateTo}}">{{asset.name}}</span>
+	  <span flex on-click="{{navigateTo}}" layout horizontal center>{{asset.name}}</span>
 	  <core-icon icon="create"></core-icon> 
   </div> 
 </div>

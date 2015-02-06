@@ -1,5 +1,6 @@
 library cs_elements.asset_details;
 
+import 'dart:async';
 import 'dart:html';
 
 import 'package:polymer/polymer.dart';
@@ -19,7 +20,14 @@ class AssetDetails extends PolymerElement with AssetBase {
   @observable
   SessionElement session;
 
-  AssetDetails.created(): super.created();
+  @observable
+  bool phoneScreen;
+
+  List<StreamSubscription> _subscriptions;
+
+  AssetDetails.created(): super.created() {
+    _subscriptions = [];
+  }
 
   void attached() {
     super.attached();
@@ -30,6 +38,8 @@ class AssetDetails extends PolymerElement with AssetBase {
 
   void detached() {
     super.detached();
+    _subscriptions.forEach((subscription) => subscription.cancel());
+    _subscriptions = [];
   }
 
   void saveAssetChanges([Event e]) {
@@ -54,26 +64,5 @@ class AssetDetails extends PolymerElement with AssetBase {
     if (e != null)
       e.preventDefault();
     asset.reset();
-  }
-
-  void captureImage([Event e]) {
-    if (e != null)
-      e.preventDefault();
-    var fileInput = shadowRoot.querySelector('input[type=file');
-    fileInput.onChange.first.then((Event e) {
-      if (fileInput.files.isNotEmpty) {
-        var file = fileInput.files.first;
-        _loadFileIntoAsset(file);
-      }
-    });
-    fileInput.click();
-  }
-
-  void _loadFileIntoAsset(File file) {
-    var fileReader = new FileReader();
-    fileReader.onLoad.first.then((_) {
-      asset.imageSrc = fileReader.result;
-    });
-    fileReader.readAsDataUrl(file);
   }
 }

@@ -34,8 +34,17 @@ optional-image {
 	border-radius: 5px;
 }
 
+optional-image.mobileFlow {
+	margin-right: 0px;
+}
+
 cs-qrcode {
 	border-radius: 5px;
+}
+
+.detailsContainer {
+	margin-right: 10px;
+	margin-bottom: 10px;
 }
 
 
@@ -82,6 +91,7 @@ textarea, :host /deep/ input[is=core-input].field {
   margin-top: 10px;
   height: 60px;
   padding-right: 10px;
+  margin-bottom: 10px;
 }
 
 button {
@@ -97,18 +107,6 @@ button {
 
 :host div {
 	box-sizing: content-box;
-}
-
-input[type=file] {
-  visibility: hidden;
-  width: 0;
-  height: 0;
-}
-
-#fileSelect {
-  margin-top: 10px;
-  /* width: 256px; */
-  height: 60px;
 }
 
 #saveButton {
