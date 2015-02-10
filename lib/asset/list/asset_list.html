@@ -1,4 +1,4 @@
-
+  
 <!DOCTYPE html>
 
 <link rel="import" href="../../../../packages/polymer/polymer.html">
@@ -37,7 +37,8 @@
     <core-icon-button icon="add" on-click="{{createAsset}}">New asset</core-icon-button>
   </div>
   <template repeat="{{asset in assetList.assets}}">
-    <asset-list-item asset="{{asset.toJsonString()}}"></asset-list-item>
+    <asset-list-item asset="{{asset.toJsonString()}}"
+                     on-asset-deleted="{{handleAssetDeleted}}"></asset-list-item>
   </template>
 </div>
 </template>

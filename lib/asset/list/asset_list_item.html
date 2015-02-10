@@ -5,6 +5,11 @@
 
 <link rel="import" 
     href="../../../../packages/core_elements/core_icons.html">
+<link rel="import"
+    href="../../../../packages/core_elements/core_ajax_dart.html">
+    
+<link rel="import"
+    href="../../generic/spinner/spinner.html">
 
 <polymer-element name="asset-list-item" attributes="asset">
 <template>
@@ -15,7 +20,7 @@
   
   #outerContainer {
     width: inherit;
-    height: 100%;
+    /* height: 100%; */
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -50,14 +55,30 @@
 	  outline: none;
 	}
 </style>
+
+<core-ajax-dart
+    url="/asset/{{asset.id}}"
+    handleAs="json"
+    headers="{{session.sessionHeaders}}"
+    method="DELETE"
+></core-ajax-dart>
+     
+
 <div id="outerContainer" layout vertical center>
+
   <div id="header" layout horizontal center>
 	  <!-- 
 	  <core-icon icon="{{expanded ? 'expand-more' : 'expand-less'}}"
 	             on-click="{{displayDetails}}"></core-icon>
 	  -->
 	  <span flex on-click="{{navigateTo}}" layout horizontal center>{{asset.name}}</span>
-	  <core-icon icon="create"></core-icon> 
+	  
+	  <template if="{{deletingAsset}}">
+	   <progress-spinner></progress-spinner>
+	  </template>
+	  <template if="{{!deletingAsset}}">
+	   <core-icon icon="clear" on-click="{{deleteAsset}}"></core-icon> 
+	  </template>
   </div> 
 </div>
 </template>
