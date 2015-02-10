@@ -29,7 +29,7 @@ class SignupForm extends PolymerElement {
   @observable
   SessionElement session;
 
-  bool get hasError => errorMessage != null && errorMessage.isNotEmpty;
+  bool get hasError => errorMessage != null;
 
   PathObserver _scoreObserver;
 
@@ -44,7 +44,7 @@ class SignupForm extends PolymerElement {
 
     this._scoreObserver = new PathObserver($['passwordStrength'], 'score');
     var currentScore = _scoreObserver.open((newValue, oldValue) {
-      errorMessage = (newValue <= 1) ? 'Password too weak': '';
+      errorMessage = (newValue <= 1) ? 'Password too weak': null;
     });
 
     Polymer.onReady.then((_) {
@@ -76,7 +76,7 @@ class SignupForm extends PolymerElement {
     if (password != confirmPassword) {
       errorMessage = 'passwords do not match';
     } else {
-      errorMessage = '';
+      errorMessage = null;
     }
   }
 
@@ -92,13 +92,16 @@ class SignupForm extends PolymerElement {
 
     AjaxFormElement form = $['mainform'];
     form.submit().then((response) {
-      print(response.responseText);
+      print(UTF8.decode(response.content));
       var body = JSON.decode(UTF8.decode(response.content));
       if (response.status >= 200 && response.status < 300) {
-        window.location.href =
+        errorMessage = null;
+        /* window.location.href =
             callback != null
             ? Uri.decodeComponent(callback)
             : '/';
+        *
+         */
       } else {
         this.errorMessage = body['error'];
       }

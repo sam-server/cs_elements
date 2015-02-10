@@ -18,14 +18,15 @@
       }
     </style>
     
-    
-      <fieldset>
-        <legend>Error</legend>
-        <div id="container" layout horizontal center start-justified>
-        <core-icon icon="error" on-click="{{printError}}"></core-icon>
-        <p>{{error}}</p>
-        </div>
-      </fieldset>
+      <template if="{{error != null}}">
+	      <fieldset>
+	        <legend>Error</legend>
+	        <div id="container" layout horizontal center start-justified>
+	        <core-icon icon="error"></core-icon>
+	        <p>{{error}}</p>
+	        </div>
+	      </fieldset>
+      </template>
   </template>
   <script type="application/dart" src="error_display.dart"></script>
 </polymer-element>

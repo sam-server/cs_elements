@@ -48,12 +48,14 @@ class LoginForm extends PolymerElement {
     e.preventDefault();
     if (username == null || username.isEmpty) {
       errorMessage = 'No username provided';
-      return;
     } else if (password == null || password.isEmpty) {
       errorMessage = 'Password required';
     } else {
-      errorMessage = '';
+      errorMessage = null;
     }
+
+    if (errorMessage != null)
+      return;
 
     _form.submit().then((FormResponse response) {
       if (response.status >= 200 && response.status < 300) {

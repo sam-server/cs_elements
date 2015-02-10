@@ -89,7 +89,7 @@
                   class="formInput"/>
          </input-decorator>
         
-	       <template if="{{errorMessage != ''}">
+	       <template if="{{hasError}}">
 	         <error-display error="{{errorMessage}}"></error-display>
 	       </template>
         
