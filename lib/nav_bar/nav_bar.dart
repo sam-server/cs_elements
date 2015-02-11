@@ -2,6 +2,7 @@
 library cs_elements.nav_bar;
 
 import 'dart:async';
+import 'dart:html';
 
 import 'package:polymer/polymer.dart';
 
@@ -42,5 +43,9 @@ class NavBar extends PolymerElement {
   void detached() {
     super.detached();
     _listeners.forEach((subscription) => subscription.cancel());
+  }
+
+  void goHome() {
+    window.location.href = '/';
   }
 }

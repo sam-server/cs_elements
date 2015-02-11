@@ -1,7 +1,9 @@
 
 <!DOCTYPE html>
 
-<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
+<link rel="import" href="../../../packages/core_elements/core_media_query.html">
 <link rel="import" href="../generic/input_decorator/input_decorator.html">
 
 <polymer-element name="nav-bar">
@@ -72,7 +74,7 @@ input-decorator /deep/ #container {
 </style>
 
 <core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
-  <img class="logo" src="/sam_logo.svg">
+  <img class="logo" src="/sam_logo.svg" on-click="{{goHome}}">
   
   <div id="links" layout vertical center>
     <input-decorator icon="search">
