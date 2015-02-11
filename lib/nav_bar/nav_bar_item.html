@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+
+<polymer-element name="nav-bar-item" attributes="href">
+<template>
+<style>
+:host {
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: block;
+}
+
+button {
+  font-size: 1em;
+  padding: 0px;
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  width: 100%;
+  
+  background-color: #393844;
+  color: #999;
+}
+
+button:hover {
+  color: white;
+}
+</style>
+<button on-click="{{navigate}}"><content></content></button>
+</template>
+<script type="application/dart" src="nav_bar_item.dart"></script>
+</polymer-element>

@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+
+<link rel="import" href="../../../../packages/polymer/polymer.html">
+<link rel="import" href="../generic/input_decorator/input_decorator.html">
+
+<polymer-element name="nav-bar">
+<template>
+<style>
+:host {
+  display: block;
+}
+  
+img.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 96px;
+  cursor: pointer;
+}
+
+#links {
+  margin-top: 140px;
+}
+
+#items {
+  margin-top: 5px;
+  width: 80%;
+}
+
+input {
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  color: #999999;
+  outline: none;
+  font-size: 1em;
+  margin: 0px;
+}
+
+input-decorator {
+  width: 80%;
+  padding: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  
+  background-color: white;
+}
+
+input-decorator /deep/ core-icon {
+  color: #999;
+}
+
+input-decorator /deep/ #container {
+  height: 100%;
+  width: 100%;
+}
+
+#links.enable-transition {
+  position: absolute;
+  transition: 0.4s;
+  left: -80%;
+}
+
+#links.enable-transition.hover {
+  transition: 0.4s;
+  left: 10%;
+  transform: skew(0deg); 
+}
+ 
+</style>
+
+<core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
+  <img class="logo" src="/sam_logo.svg">
+  
+  <div id="links" layout vertical center>
+    <input-decorator icon="search">
+      <input type="text" placeholder="Search">
+    </input-decorator>
+		<div id="items">
+		  <content select="nav-bar-item"></content>
+		</div>
+	</div>
+</template>
+<script type="application/dart" src="nav_bar.dart"></script>
+</polymer-element>
