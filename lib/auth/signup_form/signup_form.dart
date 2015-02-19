@@ -94,14 +94,13 @@ class SignupForm extends PolymerElement {
     form.submit().then((response) {
       print(UTF8.decode(response.content));
       var body = JSON.decode(UTF8.decode(response.content));
+      print(response.status);
       if (response.status >= 200 && response.status < 300) {
         errorMessage = null;
-        /* window.location.href =
+        window.location.href =
             callback != null
             ? Uri.decodeComponent(callback)
             : '/';
-        *
-         */
       } else {
         this.errorMessage = body['error'];
       }
